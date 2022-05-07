@@ -1,14 +1,38 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+let API_URL = "http://localhost:4000/api/";
 
 export default function Signup() {
+    const navigate = useNavigate();
+
     const [formState, setFormState] = useState({
         username: "",
         email: "",
         password: "",
-        repeatPassword: "",
-        firstName: "",
-        lastName: "",
-        contactNumber: "",
+        repeat_password: "",
+        first_name: "",
+        last_name: "",
+        contact_number: "",
+        country_id: 0,
+    });
+
+    const [countryState, setCountryState] = useState({
+        country: [],
+    });
+
+    useEffect(() => {
+        const countries = async () => {
+            let response = await axios.get(API_URL + "countries");
+            setCountryState({ country: response.data });
+        };
+
+        countries();
+    }, []);
+
+    const [errorState, setErrorState] = useState({
+        errorMessage: "",
+        display: "d-none",
     });
 
     const updateFormField = (e) => {
@@ -16,6 +40,18 @@ export default function Signup() {
             ...formState,
             [e.target.name]: e.target.value,
         });
+    };
+
+    const registerUser = async () => {
+        try {
+            await axios.post(API_URL + "users/register", formState);
+            navigate("/login");
+        } catch (e) {
+            setErrorState({
+                errorMessage: e.response.data.error,
+                display: "",
+            });
+        }
     };
 
     return (
@@ -30,6 +66,7 @@ export default function Signup() {
                                     <img className="img-fluid" src={require("../assets/logo.jpg")} alt=""></img>
                                 </div>
                                 <h2 className="mb-8">Create an account</h2>
+                                <div className={"alert alert-danger " + errorState.display}>{errorState.errorMessage}</div>
                                 <form>
                                     <input
                                         className="form-control form-control-lg mb-4"
@@ -82,8 +119,8 @@ export default function Signup() {
                                     <input
                                         className="form-control form-control-lg mb-4"
                                         type="password"
-                                        name="repeatPassword"
-                                        value={formState.repeatPassword}
+                                        name="repeat_password"
+                                        value={formState.repeat_password}
                                         onChange={updateFormField}
                                         placeholder="Repeat password"
                                         style={{
@@ -98,8 +135,8 @@ export default function Signup() {
                                     <input
                                         className="form-control form-control-lg mb-4"
                                         type="text"
-                                        name="firstName"
-                                        value={formState.firstName}
+                                        name="first_name"
+                                        value={formState.first_name}
                                         onChange={updateFormField}
                                         placeholder="First Name"
                                         style={{
@@ -114,8 +151,8 @@ export default function Signup() {
                                     <input
                                         className="form-control form-control-lg mb-4"
                                         type="text"
-                                        name="lastName"
-                                        value={formState.lastName}
+                                        name="last_name"
+                                        value={formState.last_name}
                                         onChange={updateFormField}
                                         placeholder="Last Name"
                                         style={{
@@ -128,10 +165,10 @@ export default function Signup() {
                                         }}
                                     ></input>
                                     <input
-                                        className="form-control form-control-lg mb-10"
+                                        className="form-control form-control-lg mb-4"
                                         type="number"
-                                        name="contactNumber"
-                                        value={formState.contactNumber}
+                                        name="contact_number"
+                                        value={formState.contact_number}
                                         onChange={updateFormField}
                                         placeholder="Contact Number"
                                         style={{
@@ -143,11 +180,23 @@ export default function Signup() {
                                             backgroundPosition: "98% 50%",
                                         }}
                                     ></input>
+                                    <select className="form-select py-4 px-8 border mb-8" name="country_id" value={formState.country_id} onChange={updateFormField}>
+                                        <option value={0} key={0}>
+                                            Country
+                                        </option>
+                                        {countryState.country.map((p) => (
+                                            <option value={p.id} key={p.id}>
+                                                {p.name}
+                                            </option>
+                                        ))}
+                                    </select>
                                     <div className="form-check" htmlFor="">
                                         <input className="form-check-input" type="checkbox"></input>
                                         <label className="form-check-label">By signing up, you agree to our Terms, Data Policy and Cookies.</label>
                                     </div>
-                                    <button className="mt-12 mt-md-16 btn btn-dark">Create Account</button>
+                                    <div className="mt-12 mt-md-16 btn btn-dark" onClick={registerUser}>
+                                        Create Account
+                                    </div>
                                 </form>
                             </div>
                         </div>

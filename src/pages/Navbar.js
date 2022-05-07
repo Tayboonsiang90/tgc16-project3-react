@@ -1,8 +1,13 @@
 import "../css/bootstrap/bootstrap.min.css";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import UserContext from "./UserContext.js";
 
 export default function Navbar() {
+    let userContext = useContext(UserContext);
+    const navigate = useNavigate();
+
     const [sidebarState, setSidebarState] = useState({
         sidebar: "d-none",
     });
@@ -16,6 +21,33 @@ export default function Navbar() {
             setSidebarState({
                 sidebar: "d-none",
             });
+        }
+    };
+
+    const clickToLogout = () => {
+        userContext.logoutUser();
+        navigate("/login");
+    };
+
+    const displayUserFunctions = () => {
+        if (userContext.user) {
+            return (
+                <>
+                    <div>Welcome, {userContext.user.username}</div>
+                    <div className="ms-5" onClick={clickToLogout}>
+                        Logout
+                    </div>
+                </>
+            );
+        } else {
+            return (
+                <>
+                    <Link to="/Signup">Sign Up</Link>
+                    <Link className="ms-5" to="/Login">
+                        Login
+                    </Link>
+                </>
+            );
         }
     };
 
@@ -100,10 +132,7 @@ export default function Navbar() {
                                     strokeLinejoin="round"
                                 ></path>
                             </svg> */}
-                            <Link to="/Signup">Sign Up</Link>
-                            <Link className="ms-5" to="/Login">
-                                Login
-                            </Link>
+                            {displayUserFunctions()}
                         </div>
                         <div className="d-lg-none d-flex me-6 align-items-center text-secondary" href="#">
                             <svg className="me-2" width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -161,10 +190,7 @@ export default function Navbar() {
                                     strokeLinejoin="round"
                                 ></path>
                             </svg>
-                            <Link to="/Signup">Sign Up</Link>
-                            <Link className="ms-5" to="/Login">
-                                Login
-                            </Link>
+                            {displayUserFunctions()}
                         </div>
                         <div className="d-flex align-items-center">
                             <div className="link-dark text-decoration-none me-10" href="#">

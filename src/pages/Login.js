@@ -1,19 +1,46 @@
+import axios from "axios";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+let API_URL = "http://localhost:4000/api/";
 
 export default function Login() {
-        const [formState, setFormState] = useState({
-            email: "",
-            password: "",
-        });
+    const navigate = useNavigate();
 
-        const updateFormField = (e) => {
-            setFormState({
-                ...formState,
-                [e.target.name]: e.target.value,
+    const [formState, setFormState] = useState({
+        email: "",
+        password: "",
+    });
+
+    const [errorState, setErrorState] = useState({
+        errorMessage: "",
+        display: "d-none",
+    });
+
+    const updateFormField = (e) => {
+        setFormState({
+            ...formState,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    const loginUser = async () => {
+        try {
+            let response = await axios.post(API_URL + "users/login", formState);
+            
+            localStorage.setItem("accessToken", response.data.accessToken);
+            localStorage.setItem("refreshToken", response.data.refreshToken);
+
+            navigate("/profile");
+        } catch (e) {
+            setErrorState({
+                errorMessage: e.response.data.error,
+                display: "",
             });
-        };
+        }
+    };
+
     return (
         <React.Fragment>
             <section className="py-20 bg-light overflow-hidden">
@@ -26,6 +53,7 @@ export default function Login() {
                                     <img className="img-fluid" src={require("../assets/logo.jpg")} alt=""></img>
                                 </div>
                                 <h2 className="mb-8">Login</h2>
+                                <div className={"alert alert-danger " + errorState.display}>{errorState.errorMessage}</div>
                                 <form action="">
                                     <input
                                         className="form-control form-control-lg mb-4"
@@ -62,7 +90,9 @@ export default function Login() {
                                     <p>
                                         Don't have an account? <Link to="/Signup">Create one</Link>
                                     </p>
-                                    <button className="mt-12 mt-md-16 btn btn-dark">Login</button>
+                                    <div className="mt-12 mt-md-16 btn btn-dark" onClick={loginUser}>
+                                        Login
+                                    </div>
                                 </form>
                             </div>
                         </div>
