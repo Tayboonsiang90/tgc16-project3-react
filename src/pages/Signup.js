@@ -143,7 +143,7 @@ export default function Signup() {
                                             backgroundPosition: "98% 50%",
                                         }}
                                     ></input>
-                                    <div className="form-check" for="">
+                                    <div className="form-check" htmlFor="">
                                         <input className="form-check-input" type="checkbox"></input>
                                         <label className="form-check-label">By signing up, you agree to our Terms, Data Policy and Cookies.</label>
                                     </div>

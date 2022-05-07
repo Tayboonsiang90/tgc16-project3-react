@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link, BrowserRouter } from "react-router-dom";
 
 // Imported Templates
 import Navbar from "./pages/Navbar";
@@ -18,18 +18,16 @@ function App() {
         <>
             <Navbar />
             <div>
-                <Router>
-                    <Routes>
-                        {/* Home route */}
-                        <Route path="/" element={<Home />} />
-                        {/* Signup route */}
-                        <Route path="/signup" element={<Signup />} />
-                        {/* Login route */}
-                        <Route path="/login" element={<Login />} />
-                        {/* Cart route */}
-                        <Route path="/cart" element={<Cart />} />
-                    </Routes>
-                </Router>
+                <Routes>
+                    {/* Home route */}
+                    <Route path="/" element={<Home />} />
+                    {/* Signup route */}
+                    <Route path="/signup" element={<Signup />} />
+                    {/* Login route */}
+                    <Route path="/login" element={<Login />} />
+                    {/* Cart route */}
+                    <Route path="/cart" element={<Cart />} />
+                </Routes>
             </div>
             <Footer />
         </>
