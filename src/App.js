@@ -10,12 +10,12 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Cart from "./pages/Cart";
 import Profile from "./pages/Profile";
+import Collection from "./pages/Collection";
+import Home from "./pages/Home";
+import ArtDetailsPage from "./pages/ArtDetailsPage";
 
 // Imported Context
 import UserProvider from "./pages/UserProvider";
-
-// Imported Pages
-import Home from "./pages/Home";
 
 function App() {
     return (
@@ -26,14 +26,18 @@ function App() {
                     <Routes>
                         {/* Home route */}
                         <Route path="/" element={<Home />} />
+                        {/* Collection Route */}
+                        <Route path="/collection" element={<Collection />} />
                         {/* Signup route */}
                         <Route path="/signup" element={<Signup />} />
                         {/* Login route */}
                         <Route path="/login" element={<Login />} />
                         {/* Cart route */}
                         <Route path="/cart" element={<Cart />} />
-                        {/* Cart route */}
+                        {/* Profile route */}
                         <Route path="/profile" element={<Profile />} />
+                        {/* Art Details  */}
+                        <Route path="/artDetails/:artID" element={<ArtDetailsPage />} />
                     </Routes>
                 </div>
             </UserProvider>

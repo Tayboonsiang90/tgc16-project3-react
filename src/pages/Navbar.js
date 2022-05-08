@@ -65,23 +65,13 @@ export default function Navbar() {
                         </div>
                         <ul className="navbar-nav me-8 mb-2 mb-lg-0">
                             <li className="nav-item">
-                                <div className="nav-link" aria-current="page" href="#">
-                                    Category
+                                <div className="nav-link">
+                                    Home
                                 </div>
                             </li>
                             <li className="nav-item">
-                                <div className="nav-link" aria-current="page" href="#">
+                                <div className="nav-link">
                                     Collection
-                                </div>
-                            </li>
-                            <li className="nav-item">
-                                <div className="nav-link" aria-current="page" href="#">
-                                    Story
-                                </div>
-                            </li>
-                            <li className="nav-item">
-                                <div className="nav-link" aria-current="page" href="#">
-                                    Brand
                                 </div>
                             </li>
                         </ul>
