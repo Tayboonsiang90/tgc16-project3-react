@@ -1,161 +1,153 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link, BrowserRouter } from "react-router-dom";
 import axios from "axios";
+// Routes
+import Description from "./artdetails/Description.js";
+import Listing from "./artdetails/Listing.js";
+import Ownership from "./artdetails/Ownership.js";
+import Vault from "./artdetails/Vault.js";
+
 let API_URL = "http://localhost:4000/api/";
 
 export default function ArtDetailsPage(props) {
     const { artID } = useParams();
-    const [art, setArtState] = useState({art:""});
+    const [details, setDetailsState] = useState({ art: "", artist: "", vault: "", tags: "", medias: "" });
 
     useEffect(() => {
         const fetchProduct = async () => {
             let response = await axios.get(API_URL + "arts/" + artID);
-            setArtState({ art: response.data });
+            setDetailsState({ art: response.data, artist: response.data.artist, medias: response.data.medias, vault: response.data.vault, tags: response.data.tags });
         };
         fetchProduct();
     }, [artID]);
 
     return (
         <React.Fragment>
-            <h1>Art Details</h1>
-            {art ? (
-                <ul>
-                    <li>ID: {art.art.id}</li>
-                    <li>Name: {art.art.name}</li>
-                </ul>
-            ) : null}
             <section className="py-20 overflow-hidden">
-  <div className="container">
-    <div className="row mb-24">
-      <div className="col-12 col-md-6 mb-8 mb-md-0">
-        <div className="position-relative mb-10" style={{height: "64px"}}>
-          <div className="position-absolute top-50 start-0 ms-8 translate-middle-y" href="#">
-            <svg width="10" height="18" viewBox="0 0 10 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M9 16.0185C9.268 16.2905 9.268 16.7275 9 16.9975C8.732 17.2675 8.299 17.2685 8.031 16.9975L0.201 9.0895C-0.067 8.8195 -0.067 8.3825 0.201 8.1105L8.031 0.2025C8.299 -0.0675 8.732 -0.0675 9 0.2025C9.268 0.4735 9.268 0.9115 9 1.1815L1.859 8.6005L9 16.0185Z" fill="#1F40FF"></path>
-            </svg>
-          </div>
-          {/* <img className="img-fluid w-100 h-100" style={{object-fit: cover;" src="yofte-assets/images/product-bottle.png" alt=""> */}
-          <div className="position-absolute top-50 end-0 me-8 translate-middle-y" href="#">
-            <svg width="10" height="18" viewBox="0 0 10 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M0.19922 1.1817C-0.0687795 0.909696 -0.0687794 0.472695 0.19922 0.202695C0.46722 -0.0673054 0.90022 -0.0683048 1.16822 0.202695L8.99822 8.11069C9.26622 8.3807 9.26622 8.81769 8.99822 9.08969L1.16822 16.9977C0.900219 17.2677 0.467218 17.2677 0.199219 16.9977C-0.0687809 16.7267 -0.0687808 16.2887 0.199219 16.0187L7.34022 8.5997L0.19922 1.1817Z" fill="#1F40FF"></path>
-            </svg>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-6 col-sm-3 p-2">
-            <div className="d-block border border-info" href="#">
-              {/* <img className="w-100 img-fluid" style={{height: 128px;" src="yofte-assets/images/product-bottle.png" alt=""> */}
-            </div>
-          </div>
-          <div className="col-6 col-sm-3 p-2">
-            <div className="d-block" href="#">
-              {/* <img className="w-100 img-fluid" style={{height: 128px;" src="yofte-assets/images/product-bottle2.png" alt=""> */}
-            </div>
-          </div>
-          <div className="col-6 col-sm-3 p-2">
-            <div className="d-block" href="#">
-              {/* <img className="w-100 img-fluid" style={{height: 128px;" src="yofte-assets/images/product-bottle3.png" alt=""> */}
-            </div>
-          </div>
-          <div className="col-6 col-sm-3 p-2">
-            <div className="d-block" href="#">
-              {/* <img className="w-100 img-fluid" style={{height: 128px;" src="yofte-assets/images/product-bottle4.png" alt=""> */}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="col-12 col-md-6">
-        <div className="ps-lg-20">
-          <div className="mb-10 pb-10 border-bottom">
-            <span className="text-secondary">Brille</span>
-            <h1 className="mt-2 mb-6 mw-xl">BRILE water filter carafe</h1>
-            <div className="mb-8">
-              <button className="btn p-0">
-                {/* <img className="img-fluid" src="yofte-assets/elements/star-gold.svg" alt=""> */}
-              </button>
-              <button className="btn p-0">
-                {/* <img className="img-fluid" src="yofte-assets/elements/star-gold.svg" alt=""> */}
-              </button>
-              <button className="btn p-0">
-                {/* <img className="img-fluid" src="yofte-assets/elements/star-gold.svg" alt=""> */}
-              </button>
-              <button className="btn p-0">
-                {/* <img className="img-fluid" src="yofte-assets/elements/star-gold.svg" alt=""> */}
-              </button>
-              <button className="btn p-0">
-                {/* <img className="img-fluid" src="yofte-assets/elements/star-gray.svg" alt=""> */}
-              </button>
-            </div>
-            <p className="d-inline-block mb-8 h5 text-info">
-              <span>$29.99</span>
-              <span className="fw-normal text-secondary text-decoration-line-through" style={{fontSize: "16px"}}>$33.69</span>
-            </p>
-            <p className="mw-md text-secondary">Maecenas commodo libero ut molestie dictum. Morbi placerat eros id porttitor sagittis.</p>
-          </div>
-          <div className="d-flex mb-12">
-            <div className="me-6">
-              <span className="d-block mb-4 fw-bold text-secondary tetx-uppercase">QTY</span>
-              <div className="d-inline-flex align-items-center px-4 fw-bold text-secondary border rounded-2">
-                <button className="btn px-0 py-2">
-                  <svg width="12" height="2" viewBox="0 0 12 2" fill="none" xmlns="http://www.w3.org/2000/svg"><g opacity="0.35"><rect x="12" width="2" height="12" transform="rotate(90 12 0)" fill="currentColor"></rect></g></svg>
-                </button>
-                <input className="form-control m-0 px-2 py-4 text-center text-md-end border-0" style={{width: "48px"}} type="number" placeholder="1"></input>
-                <button className="btn px-0 py-2">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><g opacity="0.35"><rect x="5" width="2" height="12" fill="currentColor"></rect><rect x="12" y="5" width="2" height="12" transform="rotate(90 12 5)" fill="currentColor"></rect></g></svg>
-                </button>
-              </div>
-            </div>
-            <div>
-              <span className="d-block mb-4 fw-bold text-secondary text-uppercase">Size</span>
-              <select className="form-select border ps-6 pe-10 py-4 fw-bold text-secondary" name="" id="">
-                <option value="1">Medium</option>
-                <option value="2">Small</option>
-                <option value="3">Large</option>
-              </select>
-            </div>
-          </div>
-          <div className="row mb-14">
-            <div className="col-12 col-xl-8 mb-4 mb-xl-0"><div className="btn w-100 btn-primary" href="#">Add to cart</div></div>
-            <div className="col-12 col-xl-4">
-              <div className="h-100 ms-auto ms-sm-0 flex-shrink-0 d-inline-flex me-4 align-items-center justify-content-center rounded-2 border" href="#" style={{width: "64px", minHeight: "52px"}}>
-                <svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M13.4993 26.2061L4.70067 16.9253C3.9281 16.1443 3.41815 15.1374 3.24307 14.0471C3.06798 12.9568 3.23664 11.8385 3.72514 10.8505V10.8505C4.09415 10.1046 4.63318 9.45803 5.29779 8.96406C5.96241 8.47008 6.73359 8.14284 7.54782 8.00931C8.36204 7.87578 9.19599 7.93978 9.98095 8.19603C10.7659 8.45228 11.4794 8.89345 12.0627 9.48319L13.4993 10.9358L14.9359 9.48319C15.5192 8.89345 16.2327 8.45228 17.0177 8.19603C17.8026 7.93978 18.6366 7.87578 19.4508 8.00931C20.265 8.14284 21.0362 8.47008 21.7008 8.96406C22.3654 9.45803 22.9045 10.1046 23.2735 10.8505V10.8505C23.762 11.8385 23.9306 12.9568 23.7556 14.0471C23.5805 15.1374 23.0705 16.1443 22.298 16.9253L13.4993 26.2061Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                </svg>
-              </div>
-              <div className="flex-shrink-0 h-100 d-inline-flex align-items-center justify-content-center rounded-2 border" href="#" style={{width: "64px", minHeight: "52px"}}>
-                <svg width="24" height="23" viewBox="0 0 24 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2.01328 18.9877C2.05682 16.7902 2.71436 12.9275 6.3326 9.87096L6.33277 9.87116L6.33979 9.86454L6.3398 9.86452C6.34682 9.85809 8.64847 7.74859 13.4997 7.74859C13.6702 7.74859 13.8443 7.75111 14.0206 7.757L14.0213 7.75702L14.453 7.76978L14.6331 7.77511V7.59486V3.49068L21.5728 10.5736L14.6331 17.6562V13.6558V13.5186L14.4998 13.4859L14.1812 13.4077C14.1807 13.4075 14.1801 13.4074 14.1792 13.4072M2.01328 18.9877L14.1792 13.4072M2.01328 18.9877C7.16281 11.8391 14.012 13.3662 14.1792 13.4072M2.01328 18.9877L14.1792 13.4072M23.125 10.6961L23.245 10.5736L23.125 10.4512L13.7449 0.877527L13.4449 0.571334V1V6.5473C8.22585 6.54663 5.70981 8.81683 5.54923 8.96832C-0.317573 13.927 0.931279 20.8573 0.946581 20.938L0.946636 20.9383L1.15618 22.0329L1.24364 22.4898L1.47901 22.0885L2.041 21.1305L2.04103 21.1305C4.18034 17.4815 6.71668 15.7763 8.8873 15.0074C10.9246 14.2858 12.6517 14.385 13.4449 14.4935V20.1473V20.576L13.7449 20.2698L23.125 10.6961Z" fill="black" stroke="black" stroke-width="0.35"></path>
-                </svg>
-              </div>
-            </div>
-          </div>
-          <div className="d-flex align-items-center">
-            <p className="me-8 mb-0 text-secondary fw-bold text-uppercase">SHARE IT</p>
-            <div className="me-1" href="#" style={{width: "32px", height: "32px"}}>
-              {/* <img className="img-fluid" src="yofte-assets/buttons/facebook-circle.svg" alt=""> */}
-            </div>
-            <div className="me-1" href="#" style={{width: "32px", height: "32px"}}>
-              {/* <img className="img-fluid" src="yofte-assets/buttons/instagram-circle.svg" alt=""> */}
-            </div>
-            <div href="#" style={{width: "32px", height: "32px"}}>
-              {/* <img className="img-fluid" src="yofte-assets/buttons/twitter-circle.svg" alt=""> */}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div>
-      <div className="row mb-16 border-bottom border-2">
-        <div className="col-6 col-md-auto"><div className="btn bg-white text-secondary rounded-0 shadow" href="#">Description</div></div>
-        <div className="col-6 col-md-auto"><div className="btn text-secondary" href="#">Customer reviews</div></div>
-        <div className="col-6 col-md-auto"><div className="btn text-secondary" href="#">Shipping &amp; returns</div></div>
-        <div className="col-6 col-md-auto"><div className="btn text-secondary" href="#">Brand</div></div>
-      </div>
-      <h3 className="mb-8 text-info">Summer collection and laoreet get</h3>
-      <p className="mw-2xl text-secondary">I had interdum at ante porta, eleifend feugiat nunc. In semper euismod mi a accums lorem sad. Morbi at auctor nibh. Aliquam tincidunt placerat mollis. Lorem euismod dignissim, felis tortor ollis eros, non ultricies turpis.</p>
-    </div>
-  </div>
-</section>
+                <div className="container">
+                    <div className="row mb-24">
+                        {/* Images  */}
+                        <div className="col-12 col-md-6 mb-8 mb-md-0">
+                            <div className="position-relative mb-10">
+                                <img className="img-fluid w-100 h-100" style={{ objectFit: "cover" }} src={details.art.image_url} alt=""></img>
+                                <h5 className="mt-5">Medias</h5>
+                                {details.medias ? details.medias.map((p) => <span className="badge rounded-pill bg-success mt-5">{p.name}</span>) : ""}
+                                <h5 className="mt-5">Tags</h5>
+                                {details.tags ? details.tags.map((p) => <span className="badge rounded-pill bg-danger mt-5">{p.name}</span>) : ""}
+                            </div>
+                        </div>
+                        {/* Right Side Details  */}
+                        <div className="col-12 col-md-6">
+                            <div className="ps-lg-20">
+                                <div className="mb-10 pb-10 border-bottom">
+                                    <span className="h5 text-secondary">{details.art.year}</span>
+                                    <h1 className="mt-2 mb-6 mw-xl">{details.art.name}</h1>
+                                    <p className="d-inline-block mb-8 h5 text-info">
+                                        <span>{details.artist["first_name"] + " " + details.artist["last_name"]}</span>
+                                    </p>
+                                    <p className="mw-md text-secondary">{details.art.description}</p>
+                                </div>
+                                <div className="d-flex mb-12">
+                                    <div>
+                                        <span className="d-block mb-4 fw-bold text-secondary text-uppercase">TOTAL SHARES</span>
+                                        <div className="border ps-6 pe-10 py-4 fw-bold text-secondary">{details.art.total_share}</div>
+                                    </div>
+                                </div>
+                                <div className="d-flex align-items-center">
+                                    <p className="me-8 mb-0 text-secondary fw-bold text-uppercase">SHARE IT</p>
+                                    <div className="me-1" href="#" style={{ width: "32px", height: "32px" }}>
+                                        <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <circle cx="25" cy="25" r="25" fill="#5475E5" />
+                                            <g clipPath="url(#clip0)">
+                                                <path
+                                                    d="M33.0064 17H16.9928C16.4444 17.0003 15.9999 17.4451 16 17.9936V34.0072C16.0003 34.5556 16.4451 35.0001 16.9936 35H33.0064C33.5551 35.0001 33.9999 34.5555 34 34.0068C34 34.0067 34 34.0066 34 34.0064V17.9928C33.9997 17.4444 33.5549 16.9999 33.0064 17Z"
+                                                    fill="white"
+                                                />
+                                                <path
+                                                    d="M28.4277 35.0003V28.0394H30.7744L31.126 25.3148H28.4277V23.5795C28.4277 22.7924 28.6462 22.2562 29.7748 22.2562H31.2051V19.8259C30.9562 19.7928 30.1025 19.7188 29.109 19.7188C27.0348 19.7188 25.6152 20.9844 25.6152 23.3096V25.3148H23.2773V28.0394H25.6152V35.0003H28.4277Z"
+                                                    fill="#5475E5"
+                                                />
+                                            </g>
+                                            <defs>
+                                                <clipPath id="clip0">
+                                                    <rect width="18" height="18" fill="white" transform="translate(16 17)" />
+                                                </clipPath>
+                                            </defs>
+                                        </svg>
+                                    </div>
+                                    <div className="me-1" href="#" style={{ width: "32px", height: "32px" }}>
+                                        <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <circle cx="25" cy="25" r="25" fill="#A692FF" />
+                                            <g clipPath="url(#clip0)">
+                                                <path
+                                                    d="M33.982 21.292C33.9398 20.3356 33.7852 19.6781 33.5636 19.1084C33.3351 18.5036 32.9834 17.9621 32.5227 17.512C32.0726 17.0549 31.5276 16.6997 30.9298 16.4747C30.3568 16.2531 29.7027 16.0985 28.7463 16.0563C27.7827 16.0106 27.4768 16 25.033 16C22.5892 16 22.2833 16.0106 21.3233 16.0527C20.3669 16.0949 19.7094 16.2497 19.1398 16.4711C18.5348 16.6997 17.9934 17.0513 17.5433 17.512C17.0861 17.9621 16.7311 18.5072 16.506 19.1049C16.2844 19.6781 16.1297 20.3321 16.0876 21.2885C16.0418 22.252 16.0312 22.5579 16.0312 25.0018C16.0312 27.4456 16.0418 27.7515 16.084 28.7115C16.1262 29.6679 16.281 30.3254 16.5025 30.8952C16.7311 31.4999 17.0861 32.0414 17.5433 32.4915C17.9934 32.9486 18.5384 33.3038 19.1362 33.5288C19.7094 33.7504 20.3633 33.905 21.3199 33.9472C22.2797 33.9895 22.5857 33.9999 25.0296 33.9999C27.4734 33.9999 27.7793 33.9895 28.7393 33.9472C29.6957 33.905 30.3532 33.7504 30.9228 33.5288C32.1325 33.0611 33.0889 32.1047 33.5566 30.8952C33.778 30.322 33.9328 29.6679 33.975 28.7115C34.0172 27.7515 34.0278 27.4456 34.0278 25.0018C34.0278 22.5579 34.0242 22.252 33.982 21.292ZM32.3611 28.6411C32.3223 29.5202 32.1747 29.9949 32.0516 30.3114C31.7492 31.0956 31.1268 31.7179 30.3426 32.0204C30.0262 32.1434 29.548 32.2911 28.6724 32.3297C27.723 32.372 27.4382 32.3824 25.0366 32.3824C22.6349 32.3824 22.3466 32.372 21.4006 32.3297C20.5216 32.2911 20.0468 32.1434 19.7304 32.0204C19.3402 31.8761 18.985 31.6476 18.6966 31.3487C18.3978 31.0568 18.1692 30.7052 18.025 30.315C17.9019 29.9985 17.7542 29.5202 17.7156 28.6447C17.6733 27.6953 17.6629 27.4104 17.6629 25.0088C17.6629 22.6071 17.6733 22.3188 17.7156 21.373C17.7542 20.4939 17.9019 20.0192 18.025 19.7027C18.1692 19.3123 18.3978 18.9573 18.7002 18.6688C18.992 18.3699 19.3436 18.1414 19.734 17.9973C20.0504 17.8742 20.5287 17.7266 21.4042 17.6878C22.3536 17.6457 22.6385 17.6351 25.04 17.6351C27.4453 17.6351 27.73 17.6457 28.676 17.6878C29.555 17.7266 30.0297 17.8742 30.3462 17.9973C30.7364 18.1414 31.0916 18.3699 31.3799 18.6688C31.6788 18.9607 31.9074 19.3123 32.0516 19.7027C32.1747 20.0192 32.3223 20.4973 32.3611 21.373C32.4032 22.3224 32.4138 22.6071 32.4138 25.0088C32.4138 27.4104 32.4032 27.6917 32.3611 28.6411Z"
+                                                    fill="white"
+                                                />
+                                                <path
+                                                    d="M25.0341 20.3779C22.4813 20.3779 20.4102 22.449 20.4102 25.0019C20.4102 27.5548 22.4813 29.6258 25.0341 29.6258C27.587 29.6258 29.6581 27.5548 29.6581 25.0019C29.6581 22.449 27.587 20.3779 25.0341 20.3779ZM25.0341 28.0013C23.378 28.0013 22.0347 26.6581 22.0347 25.0019C22.0347 23.3456 23.378 22.0024 25.0341 22.0024C26.6903 22.0024 28.0335 23.3456 28.0335 25.0019C28.0335 26.6581 26.6903 28.0013 25.0341 28.0013Z"
+                                                    fill="white"
+                                                />
+                                                <path d="M30.9189 20.1952C30.9189 20.7913 30.4355 21.2747 29.8392 21.2747C29.2431 21.2747 28.7598 20.7913 28.7598 20.1952C28.7598 19.5989 29.2431 19.1157 29.8392 19.1157C30.4355 19.1157 30.9189 19.5989 30.9189 20.1952Z" fill="white" />
+                                            </g>
+                                            <defs>
+                                                <clipPath id="clip0">
+                                                    <rect width="18" height="18" fill="white" transform="translate(16 16)" />
+                                                </clipPath>
+                                            </defs>
+                                        </svg>
+                                    </div>
+                                    <div href="#" style={{ width: "32px", height: "32px" }}>
+                                        <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <circle cx="25" cy="25" r="25" fill="#69B6FF" />
+                                            <path
+                                                d="M35 19.4189C34.3306 19.7125 33.6174 19.9071 32.8737 20.0016C33.6388 19.5449 34.2226 18.8271 34.4971 17.962C33.7839 18.3872 32.9964 18.6876 32.1571 18.8553C31.4799 18.1341 30.5146 17.6875 29.4616 17.6875C27.4186 17.6875 25.7739 19.3458 25.7739 21.3786C25.7739 21.6711 25.7986 21.9524 25.8594 22.2201C22.7915 22.0705 20.0769 20.6001 18.2533 18.3603C17.9349 18.9126 17.7481 19.5449 17.7481 20.2255C17.7481 21.5035 18.4062 22.6364 19.3872 23.2922C18.7944 23.281 18.2127 23.1089 17.72 22.8377C17.72 22.849 17.72 22.8636 17.72 22.8782C17.72 24.6715 18.9991 26.161 20.6765 26.5041C20.3761 26.5863 20.0487 26.6256 19.709 26.6256C19.4727 26.6256 19.2342 26.6121 19.0104 26.5626C19.4885 28.024 20.8453 29.0984 22.4585 29.1332C21.203 30.1154 19.6089 30.7071 17.8831 30.7071C17.5805 30.7071 17.2902 30.6936 17 30.6565C18.6346 31.7106 20.5719 32.3125 22.661 32.3125C29.4515 32.3125 33.164 26.6875 33.164 21.8117C33.164 21.6486 33.1584 21.4911 33.1505 21.3348C33.8829 20.815 34.4982 20.1659 35 19.4189Z"
+                                                fill="white"
+                                            />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {/* Bottom Details  */}
+                    <div>
+                        <div className="row mb-8 border-bottom border-2">
+                            <div className="col-6 col-md-auto">
+                                <Link to={"/art/" + details.art.id + "/"} className="btn text-secondary">
+                                    Listings
+                                </Link>
+                            </div>
+                            <div className="col-6 col-md-auto">
+                                <Link to={"/art/" + details.art.id + "/description"} className="btn text-secondary">
+                                    Description
+                                </Link>
+                            </div>
+
+                            <div className="col-6 col-md-auto">
+                                <Link to={"/art/" + details.art.id + "/ownership"} className="btn text-secondary">
+                                    Ownership List
+                                </Link>
+                            </div>
+                            <div className="col-6 col-md-auto">
+                                <Link to={"/art/" + details.art.id + "/vault"} className="btn text-secondary">
+                                    Vault Details
+                                </Link>
+                            </div>
+                        </div>
+                        <Routes>
+                            {/* Listing route */}
+                            <Route path="/" element={<Listing />} />
+                            {/* Description Route */}
+                            <Route path="/description" element={<Description artist={details.artist} description={details.art.description} />} />
+                            {/* Ownership route */}
+                            <Route path="/ownership" element={<Ownership />} />
+                            {/* Vault route */}
+                            <Route path="/vault" element={<Vault vault={details.vault}/>} />
+                        </Routes>
+                    </div>
+                </div>
+            </section>
         </React.Fragment>
     );
 }

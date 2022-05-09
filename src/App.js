@@ -37,7 +37,7 @@ function App() {
                         {/* Profile route */}
                         <Route path="/profile" element={<Profile />} />
                         {/* Art Details  */}
-                        <Route path="/artDetails/:artID" element={<ArtDetailsPage />} />
+                        <Route path="/art/:artID/*" element={<ArtDetailsPage />} />
                     </Routes>
                 </div>
             </UserProvider>

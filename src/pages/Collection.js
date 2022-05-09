@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 let API_URL = "http://localhost:4000/api/";
 
 export default function Collection() {
@@ -51,11 +52,10 @@ export default function Collection() {
                 <section className="py-20 bg-light overflow-hidden">
                     <div className="container">
                         {/* The top most text "Found 125 results for Sports" */}
-                        <div className="debug row mb-20 align-items-center justify-content-between">
+                        <div className="row mb-20 align-items-center justify-content-between">
                             <div className="col-12 col-lg-auto mb-12 mb-xl-0">
                                 <h2 className="font-heading">
-                                    <span>Found 125 results</span>
-                                    <div className="position-relative text-info text-underline">Sports</div>
+                                    <span>Found {artState.art.length} results</span>
                                 </h2>
                             </div>
                             <div className="col-12 col-lg-auto row align-items-center">
@@ -67,7 +67,7 @@ export default function Collection() {
                                     </select>
                                 </div>
                                 <div className="col-12 col-sm-auto">
-                                    <div className={"debug btn me-3 h-100 p-4 rounded-2 border " + formatState.buttonAmazon} onClick={updateFormatTrigger}>
+                                    <div className={"btn me-3 h-100 p-4 rounded-2 border " + formatState.buttonAmazon} onClick={updateFormatTrigger}>
                                         <svg width="20" height="24" viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <rect width="4" height="4" rx="2" fill="#2B51C6"></rect>
                                             <rect x="8" width="4" height="4" rx="2" fill="#2B51C6"></rect>
@@ -80,7 +80,7 @@ export default function Collection() {
                                             <rect x="16" y="20" width="4" height="4" rx="2" fill="#2B51C6"></rect>
                                         </svg>
                                     </div>
-                                    <div className={"debug btn me-3 h-100 p-4 rounded-2 border " + formatState.buttonOpensea} onClick={updateFormatTrigger}>
+                                    <div className={"btn me-3 h-100 p-4 rounded-2 border " + formatState.buttonOpensea} onClick={updateFormatTrigger}>
                                         <svg className="text-gray-200 group-hover:text-blue-300" width="28" height="24" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <rect width="4" height="4" rx="2" fill="currentColor"></rect>
                                             <rect x="8" width="4" height="4" rx="2" fill="currentColor"></rect>
@@ -100,9 +100,9 @@ export default function Collection() {
                             </div>
                         </div>
                         {/* The parent div */}
-                        <div className="debug row mb-24">
+                        <div className="row mb-24">
                             {/* Largest Side Category Card  */}
-                            <div className="debug col-12 d-lg-none">
+                            <div className="col-12 d-lg-none">
                                 <div className="row">
                                     <div className="col-6 col-md-4 px-2 mb-4">
                                         <div className="py-6 px-2 text-center bg-light-light">
@@ -235,7 +235,7 @@ export default function Collection() {
                                 </div>
                             </div>
                             {/* Smallest Top Category Card */}
-                            <div className="debug d-none d-lg-block col-3 px-3">
+                            <div className="d-none d-lg-block col-3 px-3">
                                 <div className="mb-6 py-10 px-12 bg-light-light">
                                     <h3 className="mb-8 h5">Category</h3>
                                     <ul className="list-unstyled mb-0">
@@ -365,33 +365,37 @@ export default function Collection() {
                                 </div>
                             </div>
                             {/* Amazon Styled Cards */}
-                            <div className={"debug col-12 col-lg-9 px-3 " + formatState.formatAmazon}>
+                            <div className={"col-12 col-lg-9 px-3 " + formatState.formatAmazon}>
                                 <div>
                                     {artState.art ? (
                                         artState.art.map((p) => (
-                                            <div className="position-relative mb-6 bg-light-light">
-                                                <div className="row align-items-center px-8 px-md-20 py-12">
-                                                    <div className="col-12 col-md-3 mb-4 mb-md-0">
-                                                        <div>
-                                                            <img className="mx-auto mx-md-0 img-fluid" style={{ width: "160px", height: "208px", objectFit: "contain" }} src={p.image_url} alt=""></img>
+                                            <React.Fragment key={p.id}>
+                                                <div className="position-relative mb-6 bg-light-light">
+                                                    <div className="row align-items-center px-8 px-md-20 py-12">
+                                                        <div className="col-12 col-md-3 mb-4 mb-md-0">
+                                                            <div>
+                                                                <img className="mx-auto mx-md-0 img-fluid" style={{ width: "160px", height: "208px", objectFit: "contain" }} src={p.image_url} alt=""></img>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div className="col-12 col-md-9">
-                                                        <div className="link-dark text-decoration-none d-block mb-8">
-                                                            <h3 className="mb-2 lead fw-bold">
-                                                                {p.name}, {p.year}
-                                                            </h3>
-                                                            <p className="mb-6 lead fw-bold text-info">
-                                                                <span>{p.artist.first_name + " " + p.artist.last_name}</span>
-                                                            </p>
-                                                            <p className="mw-md text-secondary">{p.description}</p>
-                                                        </div>
-                                                        <div className="d-flex flex-wrap align-items-center justify-content-between">
-                                                            <div className="mb-4 mb-md-0 me-md-4 btn btn-primary">View Details</div>
+                                                        <div className="col-12 col-md-9">
+                                                            <div className="link-dark text-decoration-none d-block mb-8">
+                                                                <h3 className="mb-2 lead fw-bold">
+                                                                    {p.name}, {p.year}
+                                                                </h3>
+                                                                <p className="mb-6 lead fw-bold text-info">
+                                                                    <span>{p.artist.first_name + " " + p.artist.last_name}</span>
+                                                                </p>
+                                                                <p className="mw-md text-secondary">{p.description}</p>
+                                                            </div>
+                                                            <div className="d-flex flex-wrap align-items-center justify-content-between">
+                                                                <Link to={"/art/" + p.id} className="mb-4 mb-md-0 me-md-4 btn btn-primary">
+                                                                    View Details
+                                                                </Link>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </React.Fragment>
                                         ))
                                     ) : (
                                         <></>
@@ -399,25 +403,27 @@ export default function Collection() {
                                 </div>
                             </div>
                             {/* Opensea Styled Cards */}
-                            <div className={"debug col-12 col-lg-9 px-3 " + formatState.formatOpensea}>
+                            <div className={"col-12 col-lg-9 px-3 " + formatState.formatOpensea}>
                                 <div className="row">
                                     {artState.art ? (
                                         artState.art.map((p) => (
-                                            <div className="col-12 col-sm-6 col-md-4 px-3 mb-8">
-                                                <div className="p-6 bg-light-light">
-                                                    {/* <span className="badge bg-white border border-2 border-danger rounded-pill fw-bold text-danger">-15%</span> */}
-                                                    <div className="link-dark text-decoration-none d-block px-6 mt-6 mb-2">
-                                                        <img className="mb-5 mx-auto img-fluid w-100" style={{ height: "224px", objectFit: "contain" }} src={p.image_url} alt=""></img>
-                                                        <h3 className="mb-2 lead fw-bold">
-                                                            {p.name}, {p.year}
-                                                        </h3>
-                                                        <p className="h6 text-info">
-                                                            <span>{p.artist.first_name + " " + p.artist.last_name}</span>
-                                                        </p>
+                                            <React.Fragment key={p.id}>
+                                                <div className="col-12 col-sm-6 col-md-4 px-3 mb-8">
+                                                    <div className="p-6 bg-light-light">
+                                                        {/* <span className="badge bg-white border border-2 border-danger rounded-pill fw-bold text-danger">-15%</span> */}
+                                                        <div className="link-dark text-decoration-none d-block px-6 mt-6 mb-2">
+                                                            <img className="mb-5 mx-auto img-fluid w-100" style={{ height: "224px", objectFit: "contain" }} src={p.image_url} alt=""></img>
+                                                            <h3 className="mb-2 lead fw-bold">
+                                                                {p.name}, {p.year}
+                                                            </h3>
+                                                            <p className="h6 text-info">
+                                                                <span>{p.artist.first_name + " " + p.artist.last_name}</span>
+                                                            </p>
+                                                        </div>
+                                                        <Link to={"/art/" + p.id} className="btn-primary ms-auto me-2 d-flex align-items-center justify-content-center border rounded-3">View Details</Link>
                                                     </div>
-                                                    <div className="btn-primary ms-auto me-2 d-flex align-items-center justify-content-center border rounded-3">Details</div>
                                                 </div>
-                                            </div>
+                                            </React.Fragment>
                                         ))
                                     ) : (
                                         <></>

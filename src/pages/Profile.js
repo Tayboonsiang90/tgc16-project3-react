@@ -103,7 +103,9 @@ export default function Profile() {
                                                   </div>
                                               </div>
                                           </td>
-                                          <td>Details</td>
+                                          <td>
+                                              <Link to={"/art/" + p.id}>Details</Link>
+                                          </td>
                                       </tr>
                                   ))
                                 : ""}

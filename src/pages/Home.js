@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 export default function Home() {
     return (
@@ -13,7 +14,9 @@ export default function Home() {
                                     At Art Gallery, we believe fine art ownership can be for everybody, not just for the rich. Our mission is to provide more people with opportunities to invest in the arts easily, and for art owners to unlock the full potential of their artwork by tapping into a
                                     larger liquidity market.
                                 </p>
-                                <div className="btn btn-primary">View the Collections</div>
+                                <Link to="/collection" className="btn btn-primary">
+                                    View the Collections
+                                </Link>
                             </div>
                         </div>
                         <div className="col-12 col-lg-6 mt-5 mt-lg-0 pt-3 pt-lg-0">
