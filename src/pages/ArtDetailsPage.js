@@ -114,7 +114,7 @@ export default function ArtDetailsPage(props) {
                     <div>
                         <div className="row mb-8 border-bottom border-2">
                             <div className="col-6 col-md-auto">
-                                <Link to={"/art/" + details.art.id + "/"} className="btn text-secondary">
+                                <Link to={"/art/" + details.art.id + "/listing"} className="btn text-secondary">
                                     Listings
                                 </Link>
                             </div>
@@ -137,13 +137,13 @@ export default function ArtDetailsPage(props) {
                         </div>
                         <Routes>
                             {/* Listing route */}
-                            <Route path="/" element={<Listing />} />
+                            <Route path="/listing" element={<Listing id={details.art.id} ttlShares={details.art.total_share}/>} />
                             {/* Description Route */}
                             <Route path="/description" element={<Description artist={details.artist} description={details.art.description} />} />
                             {/* Ownership route */}
                             <Route path="/ownership" element={<Ownership />} />
                             {/* Vault route */}
-                            <Route path="/vault" element={<Vault vault={details.vault}/>} />
+                            <Route path="/vault" element={<Vault vault={details.vault} />} />
                         </Routes>
                     </div>
                 </div>

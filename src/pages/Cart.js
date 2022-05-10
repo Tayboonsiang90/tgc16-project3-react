@@ -1,7 +1,23 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import axios from "axios";
+import UserContext from "./UserContext.js";
+
+let API_URL = "http://localhost:4000/api/";
 
 export default function Cart() {
+    let userContext = useContext(UserContext);
+
+    const [details, setDetailsState] = useState({ carts: "" });
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            let response = await axios.get(API_URL + "cart");
+            setDetailsState({ carts: response.data });
+        };
+        fetchProduct();
+    }, []);
+
     return (
         <>
             <section className="py-20 bg-light overflow-hidden">
@@ -12,22 +28,22 @@ export default function Cart() {
                             <div className="col-12 col-xl-8 mb-8 mb-xl-0">
                                 <div className="d-none d-lg-flex row">
                                     <div className="col-12 col-lg-6">
-                                        <h4 className="mb-6 text-secondary" style={{fontSize: "16px"}}>
+                                        <h4 className="mb-6 text-secondary" style={{ fontSize: "16px" }}>
                                             Description
                                         </h4>
                                     </div>
                                     <div className="col-12 col-lg-2">
-                                        <h4 className="mb-6 text-secondary" style={{fontSize: "16px"}}>
+                                        <h4 className="mb-6 text-secondary" style={{ fontSize: "16px" }}>
                                             Price
                                         </h4>
                                     </div>
                                     <div className="col-12 col-lg-2 text-center">
-                                        <h4 className="mb-6 text-secondary" style={{fontSize: "16px"}}>
+                                        <h4 className="mb-6 text-secondary" style={{ fontSize: "16px" }}>
                                             Quantity
                                         </h4>
                                     </div>
                                     <div className="col-12 col-lg-2 text-end">
-                                        <h4 className="mb-6 text-secondary" style={{fontSize: "16px"}}>
+                                        <h4 className="mb-6 text-secondary" style={{ fontSize: "16px" }}>
                                             Subtotal
                                         </h4>
                                     </div>
@@ -37,7 +53,7 @@ export default function Cart() {
                                         <div className="col-12 col-md-8 col-lg-6 mb-6 mb-md-0">
                                             <div className="row align-items-center">
                                                 <div className="col-12 col-md-4 mb-3">
-                                                    <div className="d-flex align-items-center justify-content-center bg-light" style={{width: "96px", height: "128px"}}>
+                                                    <div className="d-flex align-items-center justify-content-center bg-light" style={{ width: "96px", height: "128px" }}>
                                                         {/* <img className="img-fluid" style="object-fit: contain;" src="yofte-assets/images/waterbottle.png" alt=""> */}
                                                     </div>
                                                 </div>
@@ -49,7 +65,6 @@ export default function Cart() {
                                         </div>
                                         <div className="d-none d-lg-block col-lg-2">
                                             <p className="mb-0 lead fw-bold text-info">$29.89</p>
-                                            <span className="small text-secondary text-decoration-line-through">$33.69</span>
                                         </div>
                                         <div className="col-auto col-md-2">
                                             <div className="d-inline-flex align-items-center px-4 fw-bold text-secondary border rounded-2">
@@ -60,7 +75,7 @@ export default function Cart() {
                                                         </g>
                                                     </svg>
                                                 </button>
-                                                <input className="form-control px-2 py-4 text-center text-md-end border-0" style={{width: "48px"}} type="number" placeholder="1"></input>
+                                                <input className="form-control px-2 py-4 text-center text-md-end border-0" style={{ width: "48px" }} type="number" placeholder="1"></input>
                                                 <button className="btn px-0 py-2">
                                                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <g opacity="0.35">
@@ -79,7 +94,7 @@ export default function Cart() {
                                         <div className="col-12 col-md-8 col-lg-6 mb-6 mb-md-0">
                                             <div className="row align-items-center">
                                                 <div className="col-12 col-md-4 mb-3">
-                                                    <div className="d-flex align-items-center justify-content-center bg-light" style={{width: "96px", height: "128px"}}>
+                                                    <div className="d-flex align-items-center justify-content-center bg-light" style={{ width: "96px", height: "128px" }}>
                                                         {/* <img className="img-fluid" style="object-fit: contain;" src="yofte-assets/images/basketball.png" alt=""> */}
                                                     </div>
                                                 </div>
@@ -91,7 +106,6 @@ export default function Cart() {
                                         </div>
                                         <div className="d-none d-lg-block col-lg-2">
                                             <p className="mb-0 lead fw-bold text-info">$29.89</p>
-                                            <span className="small text-secondary text-decoration-line-through">$33.69</span>
                                         </div>
                                         <div className="col-auto col-md-2">
                                             <div className="d-inline-flex align-items-center px-4 fw-bold text-secondary border rounded-2">
@@ -102,7 +116,7 @@ export default function Cart() {
                                                         </g>
                                                     </svg>
                                                 </button>
-                                                <input className="form-control px-2 py-4 text-center text-md-end border-0" style={{width: "48px"}} type="number" placeholder="1"></input>
+                                                <input className="form-control px-2 py-4 text-center text-md-end border-0" style={{ width: "48px" }} type="number" placeholder="1"></input>
                                                 <button className="btn px-0 py-2">
                                                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <g opacity="0.35">
@@ -116,13 +130,6 @@ export default function Cart() {
                                         <div className="col-auto col-md-2 text-end">
                                             <p className="lead fw-bold text-info">$29.89</p>
                                         </div>
-                                    </div>
-                                </div>
-                                <div className="d-flex flex-wrap flex-md-nowrap align-items-center mb-lg-n4">
-                                    <span className="flex-shrink-0 me-12 mb-4 mb-lg-0 fw-bold">Apply discount code:</span>
-                                    <input className="form-control me-6 mb-4 mb-lg-0 px-8 py-4 fw-bold border" type="text" placeholder="SUMMER30X"></input>
-                                    <div className="flex-shrink-0 btn btn-sm btn-dark" href="#">
-                                        Apply
                                     </div>
                                 </div>
                             </div>
