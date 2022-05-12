@@ -130,7 +130,7 @@ export default function Navbar() {
                             </svg> */}
                             {displayUserFunctions()}
                         </div>
-                        <div className="d-lg-none d-flex me-6 align-items-center text-secondary" href="#">
+                        <div className="d-lg-none d-flex me-6 align-items-center text-secondary">
                             <svg className="me-2" width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M18.1159 8.72461H2.50427C1.99709 8.72461 1.58594 9.12704 1.58594 9.62346V21.3085C1.58594 21.8049 1.99709 22.2074 2.50427 22.2074H18.1159C18.6231 22.2074 19.0342 21.8049 19.0342 21.3085V9.62346C19.0342 9.12704 18.6231 8.72461 18.1159 8.72461Z"

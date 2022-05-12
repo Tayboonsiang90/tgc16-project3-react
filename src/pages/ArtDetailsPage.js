@@ -32,9 +32,21 @@ export default function ArtDetailsPage(props) {
                             <div className="position-relative mb-10">
                                 <img className="img-fluid w-100 h-100" style={{ objectFit: "cover" }} src={details.art.image_url} alt=""></img>
                                 <h5 className="mt-5">Medias</h5>
-                                {details.medias ? details.medias.map((p) => <span className="badge rounded-pill bg-success mt-5">{p.name}</span>) : ""}
+                                {details.medias
+                                    ? details.medias.map((p) => (
+                                          <span className="badge rounded-pill bg-success mt-5" key={p.id}>
+                                              {p.name}
+                                          </span>
+                                      ))
+                                    : ""}
                                 <h5 className="mt-5">Tags</h5>
-                                {details.tags ? details.tags.map((p) => <span className="badge rounded-pill bg-danger mt-5">{p.name}</span>) : ""}
+                                {details.tags
+                                    ? details.tags.map((p) => (
+                                          <span className="badge rounded-pill bg-danger mt-5" key={p.id}>
+                                              {p.name}
+                                          </span>
+                                      ))
+                                    : ""}
                             </div>
                         </div>
                         {/* Right Side Details  */}
@@ -137,7 +149,7 @@ export default function ArtDetailsPage(props) {
                         </div>
                         <Routes>
                             {/* Listing route */}
-                            <Route path="/listing" element={<Listing id={details.art.id} ttlShares={details.art.total_share}/>} />
+                            <Route path="/listing" element={<Listing id={details.art.id} ttlShares={details.art.total_share} />} />
                             {/* Description Route */}
                             <Route path="/description" element={<Description artist={details.artist} description={details.art.description} />} />
                             {/* Ownership route */}
