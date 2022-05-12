@@ -23,11 +23,32 @@ export default function Listing(props) {
 
     let updateFormState = (e, max) => {
         let val = Number(e.target.value);
-        console.log(max)
         if (val >= 0 && val <= max) {
             setQuantityState({
                 ...quantity,
-                [e.target.name]: Number(e.target.value),
+                [e.target.name]: val,
+            });
+        }
+    };
+
+    let decrementFormState = (e, max) => {
+        let val = quantity[e.target.getAttribute('name')]
+        if (val > 0) {
+            setQuantityState({
+                ...quantity,
+                [e.target.getAttribute('name')]: val-1,
+            });
+        }
+    };
+
+    let incrementFormState = (e, max) => {
+        console.log("Increment Button Clicked", e.target.getAttribute("name"));
+        let val = quantity[e.target.getAttribute('name')];
+        console.log("Current Val, Max", val, max);
+        if (val < max) {
+            setQuantityState({
+                ...quantity,
+                [e.target.getAttribute('name')]: val + 1,
             });
         }
     };
@@ -79,13 +100,19 @@ export default function Listing(props) {
                                         <td>
                                             <div className="col-auto col-md-2">
                                                 <div className="d-inline-flex align-items-center px-4 fw-bold text-secondary border rounded-2">
-                                                    <button className="btn px-0 py-2">
+                                                    {/* <button
+                                                        className="btn px-0 py-2"
+                                                        name={p.id}
+                                                        onClick={(e) => {
+                                                            decrementFormState(e, p.share);
+                                                        }}
+                                                    >
                                                         <svg width="12" height="2" viewBox="0 0 12 2" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                             <g opacity="0.35">
                                                                 <rect x="12" width="2" height="12" transform="rotate(90 12 0)" fill="currentColor"></rect>
                                                             </g>
                                                         </svg>
-                                                    </button>
+                                                    </button> */}
                                                     <input
                                                         className="form-control px-2 py-4 text-center text-md-end border-0"
                                                         style={{ width: "48px" }}
@@ -94,17 +121,25 @@ export default function Listing(props) {
                                                         type="number"
                                                         placeholder="0"
                                                         onChange={(e) => {
+                                                            // console.log("eeeeeee", e.target.name);
                                                             updateFormState(e, p.share);
                                                         }}
                                                     ></input>
-                                                    <button className="btn px-0 py-2">
+                                                    {/* <button
+                                                        className="btn px-0 py-2"
+                                                        name={p.id}
+                                                        onClick={(e) => {
+                                                            console.log(e.target.getAttribute("name"))
+                                                            incrementFormState(e, p.share);
+                                                        }}
+                                                    >
                                                         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                             <g opacity="0.35">
                                                                 <rect x="5" width="2" height="12" fill="currentColor"></rect>
                                                                 <rect x="12" y="5" width="2" height="12" transform="rotate(90 12 5)" fill="currentColor"></rect>
                                                             </g>
                                                         </svg>
-                                                    </button>
+                                                    </button> */}
                                                 </div>
                                             </div>
                                         </td>
