@@ -8,15 +8,101 @@ let API_URL = "http://localhost:4000/api/";
 export default function Cart() {
     let userContext = useContext(UserContext);
 
-    const [details, setDetailsState] = useState({ carts: "" });
+    const [quantity, setQuantityState] = useState({});
+    const [message, setMessage] = useState({
+        msg: "",
+    });
 
     useEffect(() => {
         const fetchProduct = async () => {
-            let response = await axios.get(API_URL + "cart");
-            setDetailsState({ carts: response.data });
+            let tempObj = {};
+            for (let i of userContext.cart) {
+                tempObj[i.fixed_price_listing_id] = i.quantity;
+            }
+            setQuantityState(tempObj);
         };
         fetchProduct();
-    }, []);
+    }, [userContext.cart]);
+
+    let updateFormState = (e, max) => {
+        let val = Number(e.target.value);
+        if (val >= 0 && val <= max) {
+            setQuantityState({
+                ...quantity,
+                [e.target.name]: val,
+            });
+        }
+    };
+
+    let updateCart = (e) => {
+        let helperFunc = async () => {
+            let cartId = e.target.getAttribute("name");
+            if (quantity[cartId] === 0) {
+                setMessage({ msg: "FAILED: You can't change the cart quantity to 0." });
+                return;
+            }
+
+            await userContext.updateUser();
+            let token = localStorage.getItem("accessToken");
+            await axios
+                .put(
+                    API_URL + "cart/" + cartId,
+                    {
+                        quantity: quantity[cartId],
+                    },
+                    {
+                        headers: {
+                            authorization: `Bearer ${token}`,
+                        },
+                    }
+                )
+                .then((response) => {
+                    setMessage({ msg: response.data.message });
+                })
+                .catch((e) => {
+                    setMessage({ msg: e });
+                });
+            await userContext.updateCart();
+        };
+
+        helperFunc();
+    };
+
+    let deleteCart = (e) => {
+        let helperFunc = async () => {
+            let cartId = e.target.getAttribute("name");
+            if (quantity[cartId] === 0) {
+                setMessage({ msg: "FAILED: You can't change the cart quantity to 0." });
+                return;
+            }
+
+            await userContext.updateUser();
+            let token = localStorage.getItem("accessToken");
+            await axios
+                .delete(API_URL + "cart/" + cartId, {
+                    headers: {
+                        authorization: `Bearer ${token}`,
+                    },
+                })
+                .then((response) => {
+                    setMessage({ msg: response.data.message });
+                })
+                .catch((e) => {
+                    setMessage({ msg: e });
+                });
+            await userContext.updateCart();
+        };
+
+        helperFunc();
+    };
+
+    let calculateTotal = () => {
+        let sum = 0;
+        for (let i of userContext.cart) {
+            sum += i.fixedPriceListing.price * i.quantity;
+        }
+        return sum;
+    };
 
     return (
         <>
@@ -27,7 +113,7 @@ export default function Cart() {
                         <div className="row align-items-center">
                             <div className="col-12 col-xl-8 mb-8 mb-xl-0">
                                 <div className="d-none d-lg-flex row">
-                                    <div className="col-12 col-lg-6">
+                                    <div className="col-12 col-lg-4">
                                         <h4 className="mb-6 text-secondary" style={{ fontSize: "16px" }}>
                                             Description
                                         </h4>
@@ -42,116 +128,72 @@ export default function Cart() {
                                             Quantity
                                         </h4>
                                     </div>
-                                    <div className="col-12 col-lg-2 text-end">
+                                    <div className="col-12 col-lg-1 text-end">
                                         <h4 className="mb-6 text-secondary" style={{ fontSize: "16px" }}>
                                             Subtotal
                                         </h4>
                                     </div>
+                                    <div className="col-12 col-lg-3 text-end">
+                                        <h4 className="mb-6 text-secondary" style={{ fontSize: "16px" }}>
+                                            Update
+                                        </h4>
+                                    </div>
                                 </div>
                                 <div className="mb-12 py-6 border-top border-bottom">
-                                    <div className="row align-items-center mb-6 mb-md-3">
-                                        <div className="col-12 col-md-8 col-lg-6 mb-6 mb-md-0">
-                                            <div className="row align-items-center">
-                                                <div className="col-12 col-md-4 mb-3">
-                                                    <div className="d-flex align-items-center justify-content-center bg-light" style={{ width: "96px", height: "128px" }}>
-                                                        {/* <img className="img-fluid" style="object-fit: contain;" src="yofte-assets/images/waterbottle.png" alt=""> */}
-                                                    </div>
-                                                </div>
-                                                <div className="col-8">
-                                                    <h3 className="mb-2 lead fw-bold">BRILE water filter carafe</h3>
-                                                    <p className="mb-0 text-secondary">Maecenas 0.7 commodo sit</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="d-none d-lg-block col-lg-2">
-                                            <p className="mb-0 lead fw-bold text-info">$29.89</p>
-                                        </div>
-                                        <div className="col-auto col-md-2">
-                                            <div className="d-inline-flex align-items-center px-4 fw-bold text-secondary border rounded-2">
-                                                <button className="btn px-0 py-2">
-                                                    <svg width="12" height="2" viewBox="0 0 12 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <g opacity="0.35">
-                                                            <rect x="12" width="2" height="12" transform="rotate(90 12 0)" fill="currentColor"></rect>
-                                                        </g>
-                                                    </svg>
-                                                </button>
-                                                <input className="form-control px-2 py-4 text-center text-md-end border-0" style={{ width: "48px" }} type="number" placeholder="1"></input>
-                                                <button className="btn px-0 py-2">
-                                                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <g opacity="0.35">
-                                                            <rect x="5" width="2" height="12" fill="currentColor"></rect>
-                                                            <rect x="12" y="5" width="2" height="12" transform="rotate(90 12 5)" fill="currentColor"></rect>
-                                                        </g>
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div className="col-auto col-md-2 text-end">
-                                            <p className="lead fw-bold text-info">$29.89</p>
-                                        </div>
-                                    </div>
-                                    <div className="row align-items-center">
-                                        <div className="col-12 col-md-8 col-lg-6 mb-6 mb-md-0">
-                                            <div className="row align-items-center">
-                                                <div className="col-12 col-md-4 mb-3">
-                                                    <div className="d-flex align-items-center justify-content-center bg-light" style={{ width: "96px", height: "128px" }}>
-                                                        {/* <img className="img-fluid" style="object-fit: contain;" src="yofte-assets/images/basketball.png" alt=""> */}
-                                                    </div>
-                                                </div>
-                                                <div className="col-8">
-                                                    <h3 className="mb-2 lead fw-bold">Nike basketball ball</h3>
-                                                    <p className="mb-0 text-secondary">Maecenas 0.7 commodo sit</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="d-none d-lg-block col-lg-2">
-                                            <p className="mb-0 lead fw-bold text-info">$29.89</p>
-                                        </div>
-                                        <div className="col-auto col-md-2">
-                                            <div className="d-inline-flex align-items-center px-4 fw-bold text-secondary border rounded-2">
-                                                <button className="btn px-0 py-2">
-                                                    <svg width="12" height="2" viewBox="0 0 12 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <g opacity="0.35">
-                                                            <rect x="12" width="2" height="12" transform="rotate(90 12 0)" fill="currentColor"></rect>
-                                                        </g>
-                                                    </svg>
-                                                </button>
-                                                <input className="form-control px-2 py-4 text-center text-md-end border-0" style={{ width: "48px" }} type="number" placeholder="1"></input>
-                                                <button className="btn px-0 py-2">
-                                                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <g opacity="0.35">
-                                                            <rect x="5" width="2" height="12" fill="currentColor"></rect>
-                                                            <rect x="12" y="5" width="2" height="12" transform="rotate(90 12 5)" fill="currentColor"></rect>
-                                                        </g>
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div className="col-auto col-md-2 text-end">
-                                            <p className="lead fw-bold text-info">$29.89</p>
-                                        </div>
-                                    </div>
+                                    {userContext.cart
+                                        ? userContext.cart.map((p) => (
+                                              <React.Fragment key={p.id}>
+                                                  <div className="row align-items-center mb-6 mb-md-3">
+                                                      <div className="col-12 col-md-6 col-lg-4 mb-6 mb-md-0">
+                                                          <div className="row align-items-center">
+                                                              <div className="col-12 col-md-4 mb-3">
+                                                                  <div className="d-flex align-items-center justify-content-center bg-light" style={{ width: "96px", height: "128px" }}>
+                                                                      <img className="img-fluid" style={{ objectFit: "contain" }} src={p.fixedPriceListing.art.image_url} alt=""></img>
+                                                                  </div>
+                                                              </div>
+                                                              <div className="col-6">
+                                                                  <h3 className="mb-2 lead fw-bold">{p.fixedPriceListing.art.name}</h3>
+                                                                  <p className="mb-0 text-secondary">{p.fixedPriceListing.art.name}</p>
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                      <div className="d-none d-lg-block col-lg-2">
+                                                          <p className="mb-0 lead fw-bold text-info">${Number(p.fixedPriceListing.price).toFixed(2)}</p>
+                                                      </div>
+                                                      <div className="col-auto col-md-2">
+                                                          <div className="d-inline-flex align-items-center px-4 fw-bold text-secondary border rounded-2">
+                                                              <input
+                                                                  className="form-control px-2 py-4 text-center text-md-end border-0"
+                                                                  style={{ width: "48px" }}
+                                                                  type="number"
+                                                                  value={quantity[p.fixed_price_listing_id]}
+                                                                  name={p.fixed_price_listing_id}
+                                                                  onChange={(e) => {
+                                                                      updateFormState(e, p.fixedPriceListing.share);
+                                                                  }}
+                                                              ></input>
+                                                          </div>
+                                                      </div>
+                                                      <div className="col-auto col-md-1 text-end">
+                                                          <p className="lead fw-bold text-info">${(p.fixedPriceListing.price * p.quantity).toFixed(2)}</p>
+                                                      </div>
+                                                      <div className="col-auto btn btn-success" name={p.fixed_price_listing_id} onClick={updateCart} data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                          Update
+                                                      </div>
+                                                      <div className="col-auto btn btn-danger" name={p.fixed_price_listing_id} onClick={deleteCart} data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                          Delete
+                                                      </div>
+                                                  </div>
+                                              </React.Fragment>
+                                          ))
+                                        : ""}
                                 </div>
                             </div>
                             <div className="col-12 col-xl-4">
                                 <div className="p-6 p-md-12 bg-info">
-                                    <h3 className="mb-6 text-white">Cart totals</h3>
-                                    <div className="d-flex mb-8 align-items-center justify-content-between pb-5 border-bottom border-info-light">
-                                        <span className="text-light">Subtotal</span>
-                                        <span className="lead fw-bold text-white">$89.67</span>
-                                    </div>
-                                    <h4 className="mb-2 lead fw-bold text-white">Shipping</h4>
-                                    <div className="d-flex mb-2 justify-content-between align-items-center">
-                                        <span className="text-light">Next day</span>
-                                        <span className="lead fw-bold text-white">$11.00</span>
-                                    </div>
-                                    <div className="d-flex mb-10 justify-content-between align-items-center">
-                                        <span className="text-light">Shipping to United States</span>
-                                        <span className="lead fw-bold text-white">-</span>
-                                    </div>
                                     <div className="d-flex mb-10 justify-content-between align-items-center">
                                         <span className="lead fw-bold text-white">Order total</span>
-                                        <span className="lead fw-bold text-white">$100.67</span>
+                                        <span className="lead fw-bold text-white">${calculateTotal().toFixed(2)}</span>
                                     </div>
                                     <div className="btn btn-primary w-100 text-uppercase" href="#">
                                         Go to Checkout
@@ -162,6 +204,16 @@ export default function Cart() {
                     </div>
                 </div>
             </section>
+            <div className="modal fade" id="exampleModal" tabIndex="-1">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-body d-flex justify-content-between">
+                            {JSON.stringify(message.msg)}
+                            <button type="button" className="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </>
     );
 }

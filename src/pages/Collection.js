@@ -388,7 +388,7 @@ export default function Collection() {
                                                                 <p className="mw-md text-secondary">{p.description}</p>
                                                             </div>
                                                             <div className="d-flex flex-wrap align-items-center justify-content-between">
-                                                                <Link to={"/art/" + p.id} className="mb-4 mb-md-0 me-md-4 btn btn-primary">
+                                                                <Link to={"/art/" + p.id + "/listing"} className="mb-4 mb-md-0 me-md-4 btn btn-primary">
                                                                     View Details
                                                                 </Link>
                                                             </div>
@@ -420,7 +420,9 @@ export default function Collection() {
                                                                 <span>{p.artist.first_name + " " + p.artist.last_name}</span>
                                                             </p>
                                                         </div>
-                                                        <Link to={"/art/" + p.id} className="btn-primary ms-auto me-2 d-flex align-items-center justify-content-center border rounded-3">View Details</Link>
+                                                        <Link to={"/art/" + p.id + "/listing"} className="btn-primary ms-auto me-2 d-flex align-items-center justify-content-center border rounded-3">
+                                                            View Details
+                                                        </Link>
                                                     </div>
                                                 </div>
                                             </React.Fragment>

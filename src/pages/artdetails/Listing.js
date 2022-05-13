@@ -1,12 +1,18 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import UserContext from "../UserContext.js";
 
 let API_URL = "http://localhost:4000/api/";
 
 export default function Listing(props) {
+    let userContext = useContext(UserContext);
+
     const [details, setDetailsState] = useState({ listings: "" });
     const [quantity, setQuantityState] = useState({});
+    const [message, setMessage] = useState({
+        msg: "",
+    });
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -31,29 +37,38 @@ export default function Listing(props) {
         }
     };
 
-    let decrementFormState = (e, max) => {
-        let val = quantity[e.target.getAttribute('name')]
-        if (val > 0) {
-            setQuantityState({
-                ...quantity,
-                [e.target.getAttribute('name')]: val-1,
-            });
-        }
-    };
+    let addToCart = (e) => {
+        let helperFunc = async () => {
+            let cartId = e.target.getAttribute("name");
+            if (quantity[cartId] === 0) {
+                setMessage({ msg: "FAILED: You can't add 0 quantity to the cart." });
+                return;
+            }
 
-    let incrementFormState = (e, max) => {
-        console.log("Increment Button Clicked", e.target.getAttribute("name"));
-        let val = quantity[e.target.getAttribute('name')];
-        console.log("Current Val, Max", val, max);
-        if (val < max) {
-            setQuantityState({
-                ...quantity,
-                [e.target.getAttribute('name')]: val + 1,
-            });
-        }
-    };
+            userContext.updateUser();
+            let token = localStorage.getItem("accessToken");
+            await axios
+                .post(
+                    API_URL + "cart/" + cartId,
+                    {
+                        quantity: quantity[cartId],
+                    },
+                    {
+                        headers: {
+                            authorization: `Bearer ${token}`,
+                        },
+                    }
+                )
+                .then((response) => {
+                    setMessage({ msg: response.data.message });
+                })
+                .catch((e) => {
+                    setMessage({ msg: e });
+                });
+        };
 
-    let addToCart = () => {};
+        helperFunc();
+    };
 
     return (
         <React.Fragment>
@@ -63,12 +78,12 @@ export default function Listing(props) {
                     <thead>
                         <tr className="text-end">
                             <th>#</th>
-                            <th>Shares for Sale</th>
+                            <th>Seller</th>
                             <th>Price Per Share</th>
                             <th>Total Listing Value</th>
                             <th>Indicative Value for the Art</th>
-                            <th>Seller</th>
                             <th>Date Posted</th>
+                            <th>Shares for Sale</th>
                             <th>Units to Buy</th>
                             <th>Add To Cart</th>
                         </tr>
@@ -80,8 +95,9 @@ export default function Listing(props) {
                                     <tr className="text-end">
                                         <td>{p.id}</td>
                                         <td>
-                                            <p className="mb-0 fw-bold me-2 ">{p.share.toLocaleString()}</p>
+                                            <p className="mb-0 fw-bold me-2">{p.user.username}</p>
                                         </td>
+
                                         <td>
                                             <p className="mb-0 fw-bold me-2">${Number(p.price).toFixed(2).toLocaleString()}</p>
                                         </td>
@@ -91,11 +107,12 @@ export default function Listing(props) {
                                         <td>
                                             <p className="mb-0 fw-bold me-2">${(p.price * props.ttlShares).toLocaleString()}</p>
                                         </td>
-                                        <td>
-                                            <p className="mb-0 fw-bold me-2">{p.user.username}</p>
-                                        </td>
+
                                         <td>
                                             <p className="mb-0 fw-bold me-2">{new Date(p.date_created).toLocaleString()}</p>
+                                        </td>
+                                        <td>
+                                            <p className="mb-0 fw-bold me-2 ">{p.share.toLocaleString()}</p>
                                         </td>
                                         <td>
                                             <div className="col-auto col-md-2">
@@ -144,7 +161,7 @@ export default function Listing(props) {
                                             </div>
                                         </td>
                                         <td>
-                                            <div className="btn btn-secondary" onClick={addToCart}>
+                                            <div className="btn btn-secondary" onClick={addToCart} name={p.id} data-bs-toggle="modal" data-bs-target="#exampleModal">
                                                 Add To Cart
                                             </div>
                                         </td>
@@ -156,6 +173,16 @@ export default function Listing(props) {
                         )}
                     </tbody>
                 </table>
+            </div>
+            <div className="modal fade" id="exampleModal" tabIndex="-1">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-body d-flex justify-content-between">
+                            {JSON.stringify(message.msg)}
+                            <button type="button" className="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </React.Fragment>
     );
