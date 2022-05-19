@@ -36,6 +36,7 @@ export default function Cart() {
     };
 
     let updateCart = (e) => {
+        console.log("hi")
         let helperFunc = async () => {
             let cartId = e.target.getAttribute("name");
             if (quantity[cartId] === 0) {
