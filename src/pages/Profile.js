@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import UserContext from "./UserContext.js";
 import axios from "axios";
-let API_URL = "http://localhost:4000/api/";
+let API_URL = "https://tgc16-project3-express.herokuapp.com/api/";
 
 export default function Profile() {
     let userContext = useContext(UserContext);

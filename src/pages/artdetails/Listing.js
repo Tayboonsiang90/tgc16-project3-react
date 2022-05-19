@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import UserContext from "../UserContext.js";
 
-let API_URL = "http://localhost:4000/api/";
+let API_URL = "https://tgc16-project3-express.herokuapp.com/api/";
 
 export default function Listing(props) {
     let userContext = useContext(UserContext);
@@ -15,7 +15,7 @@ export default function Listing(props) {
     });
 
     useEffect(() => {
-        console.log("Listing Use Effect Triggered")
+        console.log("Listing Use Effect Triggered");
         const fetchProduct = async () => {
             let response = await axios.get(API_URL + "listings/fixed_price_listings/art/" + props.id);
             setDetailsState({ listings: response.data });

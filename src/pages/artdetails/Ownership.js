@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-let API_URL = "http://localhost:4000/api/";
+let API_URL = "https://tgc16-project3-express.herokuapp.com/api/";
 
 export default function Ownership(props) {
     const [owners, setOwnersState] = useState("");

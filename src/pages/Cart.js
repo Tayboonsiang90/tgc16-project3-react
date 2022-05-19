@@ -4,7 +4,7 @@ import axios from "axios";
 import UserContext from "./UserContext.js";
 import { loadStripe } from "@stripe/stripe-js";
 
-let API_URL = "http://localhost:4000/api/";
+let API_URL = "https://tgc16-project3-express.herokuapp.com/api/";
 
 export default function Cart() {
     let userContext = useContext(UserContext);
