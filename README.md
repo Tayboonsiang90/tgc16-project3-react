@@ -1,72 +1,117 @@
-# Getting Started with Create React App
+# TGC-16 Project 3
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Title: Art House
 
-## Available Scripts
+URL to deployed app: https://endearing-bombolone-6cf159.netlify.app/
 
-In the project directory, you can run:
+User Login: tayboonsiang90@gmail.com
 
-### `npm start`
+User Password: rotiprata123
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+API URL tp backend: https://tgc16-project3-express.herokuapp.com/api/
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+URL to backend admin panel: https://tgc16-project3-express.herokuapp.com/
 
-### `npm test`
+Admin Login: root
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Admin Password: password
 
-### `npm run build`
+## Summary
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+There is more potential in unlocking liquidity for traditionally illiquid items. This project will focus on making a marketplace for fine art. Art is illiquid due to high prices, lack of storage skills by owners and an absence of an online global marketplace. 
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Art onboarding will be a two step process - Step 1: Physical Fine Art will be sent to a custodian, and the custodian will update the platform to state user has ownership of the Fine Art, Step 2: The art can be sold as a whole in an online marketplace, or the art can be fractionalized and sold in an in-house exchange. 
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The redemption process will be simple - The current owner can go to the custodian to retrieve the fine art from the vault. However, if the art has been fractionalized, 100% ownership of the art shares must be proven. This process will be a buy-out offer price process by the majority stakeholder, put to vote and only passes if it meets quorum specified. 
 
-### `npm run eject`
+In the online marketplace, 1 selling format is allowed for users - Fixed Price Listings, where a user can sell at a Fixed Price. 
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+The concepts for this project are easily portable to the blockchain, with concepts such as fractionalization and tokenization. 
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# UX/UI
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+User Facing Side
+Landing 
+- Listing Detail (Fixed Price Listing)
+Register
+- (if success) Landing
+- (if failure) Error Message
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Balance
 
-## Learn More
+Your Listings
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Cart
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+# FEATURES
 
-### Code Splitting
+User Authentication System
+There must be a sign - up, login, logout system. 
+Must be a secure process - CSRF, XSS protection, hashed passwords.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+User
+Any user can be a buyer or a seller.
 
-### Analyzing the Bundle Size
+# DATABASE SCHEMA
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+![alt text](./schema.png)
+![alt text](./erd.png)
 
-### Making a Progressive Web App
+## Color Palette
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+The choice of color was primarily based on a light theme.
 
-### Advanced Configuration
+## Technologies Used
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- HTML5
+- CSS3
+- JavaScript
+- Bootstrap v5
+- React
+- Font Awesome
+- Google Fonts
+- Postgres
+- Axios
+- Express
+- Cors
+- Cloudinary
+- Stripe
+- Handlebars
+- Knex
+- Bookshelf ORM
+- db-migrate
 
-### Deployment
+## Used in production
+- Visual Studio Code
+- Git
+- GitHub
+- Netlify
+- Heroku
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Deployment
+Hosted on Netlify free plan. To deploy, fork this code, and link your Github account with Netlify. Use the following settings: 
 
-### `npm run build` fails to minify
+Base directory: Not set
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# tgc16-project3-react
-# tgc16-project3-react
+Build command: CI=false npm run build
+
+Publish directory: build
+
+## CREDITS AND ACKNOWLEDGMENT
+- Visual Studio Code
+- Git
+- GitHub
+- Netlify
+- HTML5
+- CSS3
+- JavaScript
+- Bootstrap v5
+- Font Awesome
+- Google Fonts
+- Leaflet
+- Leaflet Marker Clustering
+- Apex Charts
+- Axios
+- Last but not least, Trent Global College and their excellent teacher, Paul.
+- Also my wife.
+- And Family
