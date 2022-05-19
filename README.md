@@ -2,6 +2,8 @@
 
 # Title: Art House
 
+![alt text](./preview1.png)
+
 URL to deployed app: https://endearing-bombolone-6cf159.netlify.app/
 
 User Login: tayboonsiang90@gmail.com
