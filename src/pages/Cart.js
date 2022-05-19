@@ -16,7 +16,6 @@ export default function Cart() {
 
     useEffect(() => {
         const fetchProduct = async () => {
-            userContext.updateCart();
             let tempObj = {};
             for (let i of userContext.cart) {
                 tempObj[i.fixed_price_listing_id] = i.quantity;
