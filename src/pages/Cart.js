@@ -178,7 +178,7 @@ export default function Cart() {
                                                           </div>
                                                       </div>
                                                       <div className="d-none d-lg-block col-lg-2">
-                                                          <p className="mb-0 lead fw-bold text-info">${Number(p.fixedPriceListing.price).toFixed(2)}</p>
+                                                          <p className="mb-0 lead fw-bold text-info">${Number(p.fixedPriceListing.price).toFixed(2).toLocaleString()}</p>
                                                       </div>
                                                       <div className="col-auto col-md-2">
                                                           <div className="d-inline-flex align-items-center px-4 fw-bold text-secondary border rounded-2">
@@ -195,7 +195,7 @@ export default function Cart() {
                                                           </div>
                                                       </div>
                                                       <div className="col-auto col-md-1 text-end">
-                                                          <p className="lead fw-bold text-info">${(p.fixedPriceListing.price * p.quantity).toFixed(2)}</p>
+                                                          <p className="lead fw-bold text-info">${(p.fixedPriceListing.price * p.quantity).toFixed(2).toLocaleString()}</p>
                                                       </div>
                                                       <div className="col-auto btn btn-success" name={p.fixed_price_listing_id} onClick={updateCart} data-bs-toggle="modal" data-bs-target="#exampleModal">
                                                           Update

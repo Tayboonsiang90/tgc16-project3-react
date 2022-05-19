@@ -103,10 +103,15 @@ export default function Listing(props) {
                                             <p className="mb-0 fw-bold me-2">${Number(p.price).toFixed(2).toLocaleString()}</p>
                                         </td>
                                         <td>
-                                            <p className="mb-0 fw-bold me-2">${(p.price * p.share).toFixed(2).toLocaleString()}</p>
+                                            <p className="mb-0 fw-bold me-2">
+                                                $
+                                                {Number(p.price * p.share)
+                                                    .toFixed(2)
+                                                    .toLocaleString()}
+                                            </p>
                                         </td>
                                         <td>
-                                            <p className="mb-0 fw-bold me-2">${(p.price * props.ttlShares).toLocaleString()}</p>
+                                            <p className="mb-0 fw-bold me-2">${Number(p.price * props.ttlShares).toLocaleString()}</p>
                                         </td>
 
                                         <td>
