@@ -28,7 +28,7 @@ export default function Login() {
     const loginUser = async () => {
         try {
             let response = await axios.post(API_URL + "users/login", formState);
-            
+
             localStorage.setItem("accessToken", response.data.accessToken);
             localStorage.setItem("refreshToken", response.data.refreshToken);
 

@@ -13,7 +13,8 @@ import Profile from "./pages/Profile";
 import Collection from "./pages/Collection";
 import Home from "./pages/Home";
 import ArtDetailsPage from "./pages/ArtDetailsPage";
-import Checkout from "./pages/Checkout";
+import CheckoutFailure from "./pages/CheckoutFailure";
+import CheckoutSuccess from "./pages/CheckoutSuccess";
 
 // Imported Context
 import UserProvider from "./pages/UserProvider";
@@ -39,8 +40,9 @@ function App() {
                         <Route path="/profile" element={<Profile />} />
                         {/* Art Details  */}
                         <Route path="/art/:artID/*" element={<ArtDetailsPage />} />
-                        {/* Checkout  */}
-                        <Route path="/checkout" element={<Checkout />} />
+                        {/* Checkout Route  */}
+                        <Route path="/checkout/success" element={<CheckoutSuccess />} />
+                        <Route path="/checkout/error" element={<CheckoutFailure />} />
                     </Routes>
                 </div>
             </UserProvider>

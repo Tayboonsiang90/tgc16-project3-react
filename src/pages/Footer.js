@@ -6,14 +6,6 @@ export default function Footer() {
             <div className="row">
                 <div className="col-12 col-md-5 col-lg-3 py-20 px-6 bg-white">
                     <div className="mw-xs mx-auto">
-                        <div className="d-inline-block mb-12" href="#">
-                            {/* <img className="img-fluid" src="yofte-assets/logos/yofte-logo.svg" alt=""> */}
-                        </div>
-                        <div className="mb-12 font-semibold">
-                            <p>Our Store</p>
-                            <p>Nørremark 51, 8700 Horsens</p>
-                            <p>Denmark</p>
-                        </div>
                         <div className="d-flex mb-16 mb-md-40">
                             <div className="d-inline-block me-2" href="#">
                                 {/* Facebook Logo */}
@@ -88,7 +80,7 @@ export default function Footer() {
                                 </li>
                                 <li className="mb-6">
                                     <div className="link-dark text-decoration-none" href="#">
-                                        Yofte Careers
+                                       Art Gallery Careers
                                     </div>
                                 </li>
                                 <li className="mb-6">
@@ -96,46 +88,11 @@ export default function Footer() {
                                         Investor Relations
                                     </div>
                                 </li>
-                                <li className="mb-6">
-                                    <div className="link-dark text-decoration-none" href="#">
-                                        Reward program
-                                    </div>
-                                </li>
-                                <li className="mb-6">
-                                    <div className="link-dark text-decoration-none" href="#">
-                                        Delivery information
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="link-dark text-decoration-none" href="#">
-                                        Paying by invoice
-                                    </div>
-                                </li>
                             </ul>
                         </div>
                         <div className="col-12 col-md-6 col-lg-4 mb-10 mb-lg-0">
                             <h6 className="mb-8">Customer Service</h6>
                             <ul className="list-unstyled mb-0">
-                                <li className="mb-6">
-                                    <div className="link-dark text-decoration-none" href="#">
-                                        Return an order
-                                    </div>
-                                </li>
-                                <li className="mb-6">
-                                    <div className="link-dark text-decoration-none" href="#">
-                                        Search Terms
-                                    </div>
-                                </li>
-                                <li className="mb-6">
-                                    <div className="link-dark text-decoration-none" href="#">
-                                        Advanced Search
-                                    </div>
-                                </li>
-                                <li className="mb-6">
-                                    <div className="link-dark text-decoration-none" href="#">
-                                        Orders and Returns
-                                    </div>
-                                </li>
                                 <li className="mb-6">
                                     <div className="link-dark text-decoration-none" href="#">
                                         FAQs
@@ -165,20 +122,20 @@ export default function Footer() {
                                 <li className="mb-6">
                                     <p className="mb-2">Email</p>
                                     <div className="link-info text-decoration-none" href="#">
-                                        hi@yoftestore.com
+                                        hi@artgallery.com
                                     </div>
                                 </li>
                                 <li>
                                     <p className="mb-2">Live Chat</p>
                                     <div className="link-info text-decoration-none" href="#">
-                                        yoftestore
+                                        artgallery
                                     </div>
                                 </li>
                             </ul>
                         </div>
                     </div>
                     <div className="position-relative mt-8 pb-32 pb-lg-0">
-                        <p>© Copyright 2021 Yofte</p>
+                        <p>© Copyright 2022 Art Gallery</p>
                     </div>
                 </div>
             </div>

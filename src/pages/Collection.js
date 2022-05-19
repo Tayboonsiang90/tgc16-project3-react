@@ -9,6 +9,15 @@ export default function Collection() {
         art: "",
     });
 
+    const [searchName, setSearchNameState] = useState({
+        name: "",
+    });
+
+    const [searchYear, setSearchYearState] = useState({
+        min_year: "",
+        max_year: "",
+    });
+
     useEffect(() => {
         const helperFunction = async () => {
             let response = await axios.get(API_URL + "arts");
@@ -17,6 +26,16 @@ export default function Collection() {
 
         helperFunction();
     }, []);
+
+    const updateArts = () => {
+        const helperFunction = async () => {
+            console.log("Axios call with", searchYear.min_year);
+            let response = await axios.get(API_URL + "arts", { params: { name: searchName.name, min_year: searchYear.min_year, max_year: searchYear.max_year } });
+            setArtState({ art: response.data });
+        };
+
+        helperFunction();
+    };
 
     // Button Trigger
     const [formatState, setFormatState] = useState({
@@ -101,269 +120,62 @@ export default function Collection() {
                         </div>
                         {/* The parent div */}
                         <div className="row mb-24">
-                            {/* Largest Side Category Card  */}
-                            <div className="col-12 d-lg-none">
-                                <div className="row">
-                                    <div className="col-6 col-md-4 px-2 mb-4">
-                                        <div className="py-6 px-2 text-center bg-light-light">
-                                            <div className="btn p-0 fw-bold">Category</div>
-                                            <ul className="d-none list-unstyled text-start mt-6 mb-0">
-                                                <li className="mb-4">
-                                                    <div className="link-dark text-decoration-none">New in</div>
-                                                </li>
-                                                <li className="mb-4">
-                                                    <div className="link-dark text-decoration-none">Activewear</div>
-                                                </li>
-                                                <li className="mb-4">
-                                                    <div className="link-dark text-decoration-none">Hoodies &amp; Sweatshirts</div>
-                                                </li>
-                                                <li className="mb-4">
-                                                    <div className="link-dark text-decoration-none">Jackets</div>
-                                                </li>
-                                                <li className="mb-4">
-                                                    <div className="link-dark text-decoration-none">Multipacks</div>
-                                                </li>
-                                                <li className="mb-4">
-                                                    <div className="link-dark text-decoration-none">Bags</div>
-                                                </li>
-                                                <li className="mb-4">
-                                                    <div className="link-dark text-decoration-none">Sports</div>
-                                                </li>
-                                                <li className="mb-4">
-                                                    <div className="link-dark text-decoration-none">Gifts</div>
-                                                </li>
-                                                <li>
-                                                    <div className="link-dark text-decoration-none">Notes</div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div className="col-6 col-md-4 px-2 mb-4">
-                                        <div className="py-6 px-2 text-center bg-light-light">
-                                            <div className="btn p-0 fw-bold">Colors</div>
-                                            <div className="d-none mt-6 d-flex flex-wrap">
-                                                <button className="btn me-4 mb-2 rounded-circle border border-info p-1">
-                                                    <div className="rounded-circle bg-info p-3"></div>
-                                                </button>
-                                                <button className="btn me-4 mb-2 rounded-circle border p-1">
-                                                    <div className="rounded-circle bg-primary p-3"></div>
-                                                </button>
-                                                <button className="btn me-4 mb-2 rounded-circle border p-1">
-                                                    <div className="rounded-circle bg-secondary p-3"></div>
-                                                </button>
-                                                <button className="btn me-4 mb-2 rounded-circle border p-1">
-                                                    <div className="rounded-circle bg-danger p-3"></div>
-                                                </button>
-                                                <button className="btn me-4 mb-2 rounded-circle border border-transparent p-1">
-                                                    <div className="rounded-circle bg-success p-3"></div>
-                                                </button>
-                                                <button className="btn me-4 mb-2 rounded-circle border border-transparent p-1">
-                                                    <div className="rounded-circle bg-danger-light p-3"></div>
-                                                </button>
-                                                <button className="btn me-4 mb-2 rounded-circle border border-transparent p-1">
-                                                    <div className="rounded-circle bg-warning p-3"></div>
-                                                </button>
-                                                <button className="btn mb-2 rounded-circle border border-transparent p-1">
-                                                    <div className="rounded-circle bg-light p-3"></div>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-6 col-md-4 px-2 mb-4">
-                                        <div className="py-6 px-4 text-center bg-light-light">
-                                            <div className="btn p-0 fw-bold">Price</div>
-                                            <div className="d-none mt-6">
-                                                <input className="form-range mb-4" type="range" min="1" max="100" value="50" style={{ height: "4px" }}></input>
-                                                <div className="d-flex justify-content-between">
-                                                    <span className="d-inline-block h6 text-info">$0</span>
-                                                    <span className="d-inline-block h6 text-info">$289</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-6 col-md-4 px-2 mb-4">
-                                        <div className="py-6 px-4 text-center bg-light-light">
-                                            <div className="btn p-0 fw-bold">Size</div>
-                                            <div className="d-none mt-6 row justify-content-center mb-n2">
-                                                <button className="mb-2 btn col-4 py-1 mx-1 border fw-normal">36</button>
-                                                <button className="position-relative mb-2 mx-1 btn col-4 py-1 border fw-normal">
-                                                    37
-                                                    <span className="position-absolute bottom-0 start-0 w-100 pt-1 bg-info"></span>
-                                                </button>
-                                                <button className="mb-2 btn col-4 py-1 mx-1 border fw-normal">38</button>
-                                                <button className="mb-2 btn col-4 py-1 mx-1 border fw-normal">39</button>
-                                                <button className="mb-2 btn col-4 py-1 mx-1 border fw-normal">40</button>
-                                                <button className="mb-2 btn col-4 py-1 mx-1 border fw-normal">41</button>
-                                                <button className="mb-2 btn col-4 py-1 mx-1 border fw-normal">42</button>
-                                                <button className="mb-2 btn col-4 py-1 mx-1 border fw-normal">43</button>
-                                                <button className="mb-2 btn col-4 py-1 mx-1 border fw-normal">44</button>
-                                                <div className="col-12 mt-4 text-end">
-                                                    <div className="link-info text-decoration-none">
-                                                        <span className="me-2">Show all</span>
-                                                        <svg width="14" height="27" viewBox="0 0 14 27" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M6.83901 26.2775L0.151884 19.5904L0.987775 18.7545L6.66766 24.4343L6.66347 0.782814L7.84208 0.782814L7.84626 24.4343L13.1082 19.1724L13.9441 20.0083L7.6749 26.2775C7.44407 26.5083 7.06985 26.5083 6.83901 26.2775Z"
-                                                                fill="#3C60D9"
-                                                            ></path>
-                                                        </svg>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-6 col-md-4 px-2 mb-4">
-                                        <div className="py-6 px-4 text-center bg-light-light">
-                                            <div className="btn p-0 fw-bold">Location</div>
-                                            <div className="d-none mt-6">
-                                                <div className="form-check mb-3">
-                                                    <input className="form-check-input" type="checkbox"></input>
-                                                    <label className="fomr-check-label">Standard</label>
-                                                </div>
-                                                <div className="form-check">
-                                                    <input className="form-check-input" type="checkbox"></input>
-                                                    <label className="fomr-check-label">Next day (yes!)</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-6 col-md-4 px-2 mb-4">
-                                        <div className="py-6 px-4 text-center bg-light-light">
-                                            <div className="btn p-0 fw-bold">Location</div>
-                                            <input className="d-none form-control mt-6 px-8 py-4 bg-white border" type="serach" placeholder="City"></input>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             {/* Smallest Top Category Card */}
-                            <div className="d-none d-lg-block col-3 px-3">
-                                <div className="mb-6 py-10 px-12 bg-light-light">
-                                    <h3 className="mb-8 h5">Category</h3>
-                                    <ul className="list-unstyled mb-0">
-                                        <li className="mb-4">
-                                            <div className="link-dark h6 fw-normal text-decoration-none">New in</div>
-                                        </li>
-                                        <li className="mb-4">
-                                            <div className="link-dark h6 fw-normal text-decoration-none">Activewear</div>
-                                        </li>
-                                        <li className="mb-4">
-                                            <div className="link-dark h6 fw-normal text-decoration-none">Hoodies &amp; Sweatshirts</div>
-                                        </li>
-                                        <li className="mb-4">
-                                            <div className="link-dark h6 fw-normal text-decoration-none">Jackets</div>
-                                        </li>
-                                        <li className="mb-4">
-                                            <div className="link-dark h6 fw-normal text-decoration-none">Multipacks</div>
-                                        </li>
-                                        <li className="mb-4">
-                                            <div className="link-dark h6 fw-normal text-decoration-none">Bags</div>
-                                        </li>
-                                        <li className="mb-4">
-                                            <div className="link-dark h6 fw-normal text-decoration-none">Sports</div>
-                                        </li>
-                                        <li className="mb-4">
-                                            <div className="link-dark h6 fw-normal text-decoration-none">Gifts</div>
-                                        </li>
-                                        <li>
-                                            <div className="link-dark h6 fw-normal text-decoration-none">Notes</div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div className="mb-6 py-10 px-12 bg-light-light">
-                                    <h3 className="mb-8 h5">Colors</h3>
-                                    <div className="d-flex flex-wrap">
-                                        <button className="btn me-4 mb-2 rounded-circle border border-info p-1">
-                                            <div className="rounded-circle bg-info p-3"></div>
-                                        </button>
-                                        <button className="btn me-4 mb-2 rounded-circle border p-1">
-                                            <div className="rounded-circle bg-primary p-3"></div>
-                                        </button>
-                                        <button className="btn me-4 mb-2 rounded-circle border p-1">
-                                            <div className="rounded-circle bg-secondary p-3"></div>
-                                        </button>
-                                        <button className="btn me-4 mb-2 rounded-circle border p-1">
-                                            <div className="rounded-circle bg-danger p-3"></div>
-                                        </button>
-                                        <button className="btn me-4 mb-2 rounded-circle border border-transparent p-1">
-                                            <div className="rounded-circle bg-success p-3"></div>
-                                        </button>
-                                        <button className="btn me-4 mb-2 rounded-circle border border-transparent p-1">
-                                            <div className="rounded-circle bg-danger-light p-3"></div>
-                                        </button>
-                                        <button className="btn me-4 mb-2 rounded-circle border border-transparent p-1">
-                                            <div className="rounded-circle bg-warning p-3"></div>
-                                        </button>
-                                        <button className="btn mb-2 rounded-circle border border-transparent p-1">
-                                            <div className="rounded-circle bg-light p-3"></div>
-                                        </button>
+                            <div className="d-flex d-lg-block col-12 col-lg-3">
+                                <div className="d-lg-block col-6 col-lg-12 px-3">
+                                    <div className="mb-6 py-10 px-12 bg-light-light">
+                                        <h3 className="mb-6 h5">Search Title</h3>
+                                        <input
+                                            className="form-control mt-6 px-8 py-4 bg-white border"
+                                            value={searchName.name}
+                                            onChange={(e) => {
+                                                setSearchNameState({ name: e.target.value });
+                                                updateArts();
+                                            }}
+                                            placeholder="Search Title"
+                                        ></input>
                                     </div>
                                 </div>
-                                <div className="mb-6 py-10 px-12 bg-light-light">
-                                    <h3 className="mb-8 h5">Price</h3>
-                                    <div>
-                                        <input className="form-range mb-4" type="range" min="1" max="100" value="50" style={{ height: "4px" }}></input>
-                                        <div className="d-flex justify-content-between">
-                                            <span className="d-inline-block h6 text-info">$0</span>
-                                            <span className="d-inline-block h6 text-info">$289</span>
-                                        </div>
+                                {/* <div className="d-lg-block col-6 col-lg-12 px-3">
+                                    <div className="mb-6 py-10 px-12 bg-light-light">
+                                        <h3 className="mb-6 h5">Search Artist</h3>
+                                        <input
+                                            className="form-control mt-6 px-8 py-4 bg-white border"
+                                            value={search.search}
+                                            onChange={(e) => {
+                                                setSearchState({ search: e.target.value });
+                                            }}
+                                            placeholder="Search Artist"
+                                        ></input>
                                     </div>
-                                </div>
-                                <div className="mb-6 py-10 py-12 ps-12 pe-6 bg-light-light">
-                                    <h3 className="mb-8 h5">Size</h3>
-                                    <div className="flex flex-wrap mb-n2">
-                                        <button className="mb-2 btn py-1 me-1 px-0 border fw-normal" style={{ width: "64px" }}>
-                                            36
-                                        </button>
-                                        <button className="position-relative mb-2 me-1 btn py-1 px-0 border fw-normal" style={{ width: "64px" }}>
-                                            37
-                                            <span className="position-absolute bottom-0 start-0 w-100 pt-1 bg-info"></span>
-                                        </button>
-                                        <button className="mb-2 btn py-1 me-1 px-0 border fw-normal" style={{ width: "64px" }}>
-                                            38
-                                        </button>
-                                        <button className="mb-2 btn py-1 me-1 px-0 border fw-normal" style={{ width: "64px" }}>
-                                            39
-                                        </button>
-                                        <button className="mb-2 btn py-1 me-1 px-0 border fw-normal" style={{ width: "64px" }}>
-                                            40
-                                        </button>
-                                        <button className="mb-2 btn py-1 me-1 px-0 border fw-normal" style={{ width: "64px" }}>
-                                            41
-                                        </button>
-                                        <button className="mb-2 btn py-1 me-1 px-0 border fw-normal" style={{ width: "64px" }}>
-                                            42
-                                        </button>
-                                        <button className="mb-2 btn py-1 me-1 px-0 border fw-normal" style={{ width: "64px" }}>
-                                            43
-                                        </button>
-                                        <button className="mb-2 btn py-1 me-1 px-0 border fw-normal" style={{ width: "64px" }}>
-                                            44
-                                        </button>
+                                </div> */}
+                                <div className="d-lg-block col-6 col-lg-12 px-3">
+                                    <div className="mb-6 py-10 px-12 bg-light-light">
+                                        <h3 className="mb-6 h5">Year</h3>
+                                        <input
+                                            className="form-control mt-6 px-8 py-4 bg-white border"
+                                            value={searchYear.min_year}
+                                            type="number"
+                                            onChange={(e) => {
+                                                setSearchYearState({ ...searchYear, min_year: e.target.value })
+                                                updateArts();
+                                            }}
+                                            placeholder=">="
+                                        ></input>
+                                        <input
+                                            className="form-control mt-6 px-8 py-4 bg-white border"
+                                            value={searchYear.max_year}
+                                            type="number"
+                                            onChange={(e) => {
+                                                setSearchYearState({ ...searchYear, max_year: e.target.value });
+                                                updateArts();
+                                            }}
+                                            placeholder="<="
+                                        ></input>
                                     </div>
-                                    <div className="mt-4 text-end">
-                                        <div className="link-dark text-decoration-none text-info">
-                                            <span className="me-2">Show all</span>
-                                            <svg width="14" height="27" viewBox="0 0 14 27" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M6.83901 26.2775L0.151884 19.5904L0.987775 18.7545L6.66766 24.4343L6.66347 0.782814L7.84208 0.782814L7.84626 24.4343L13.1082 19.1724L13.9441 20.0083L7.6749 26.2775C7.44407 26.5083 7.06985 26.5083 6.83901 26.2775Z" fill="#3C60D9"></path>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="mb-6 py-10 px-12 bg-light-light">
-                                    <h3 className="mb-6 h5">Location</h3>
-                                    <div className="form-check mb-3">
-                                        <input className="form-check-input" type="checkbox"></input>
-                                        <label className="fomr-check-label">Standard</label>
-                                    </div>
-                                    <div className="form-check">
-                                        <input className="form-check-input" type="checkbox"></input>
-                                        <label className="fomr-check-label">Next day (yes!)</label>
-                                    </div>
-                                </div>
-                                <div className="mb-6 py-10 px-12 bg-light-light">
-                                    <h3 className="mb-6 h5">Location</h3>
-                                    <input className="form-control mt-6 px-8 py-4 bg-white border" type="serach" placeholder="City"></input>
                                 </div>
                             </div>
+
                             {/* Amazon Styled Cards */}
                             <div className={"col-12 col-lg-9 px-3 " + formatState.formatAmazon}>
                                 <div>

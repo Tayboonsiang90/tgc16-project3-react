@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import axios from "axios";
 import UserContext from "./UserContext.js";
+import { loadStripe } from "@stripe/stripe-js";
 
 let API_URL = "http://localhost:4000/api/";
 
@@ -104,6 +105,24 @@ export default function Cart() {
         return sum;
     };
 
+    let submitcheckout = async () => {
+        await userContext.updateUser();
+        let token = localStorage.getItem("accessToken");
+
+        let response = await axios.get(API_URL + "checkout", {
+            headers: {
+                authorization: `Bearer ${token}`,
+            },
+        });
+
+        const stripePromise = loadStripe(response.data.publishableKey);
+        const stripe = await stripePromise;
+
+        stripe.redirectToCheckout({
+            sessionId: response.data.sessionId,
+        });
+    };
+
     return (
         <>
             <section className="py-20 bg-light overflow-hidden">
@@ -195,7 +214,7 @@ export default function Cart() {
                                         <span className="lead fw-bold text-white">Order total</span>
                                         <span className="lead fw-bold text-white">${calculateTotal().toFixed(2)}</span>
                                     </div>
-                                    <div className="btn btn-primary w-100 text-uppercase" href="#">
+                                    <div className="btn btn-primary w-100 text-uppercase" onClick={submitcheckout}>
                                         Go to Checkout
                                     </div>
                                 </div>

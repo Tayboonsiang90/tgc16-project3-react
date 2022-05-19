@@ -33,7 +33,9 @@ export default function Navbar() {
         if (userContext.user) {
             return (
                 <>
-                    <Link to="/profile" className="btn">Welcome, {userContext.user.username}</Link>
+                    <Link to="/profile" className="btn">
+                        Welcome, {userContext.user.username}
+                    </Link>
                     <div className="btn ms-5" onClick={clickToLogout}>
                         Logout
                     </div>
@@ -89,8 +91,7 @@ export default function Navbar() {
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="d-none d-xl-block navbar-collapse ms-xl-10">
-                        <input className="d-none d-xl-block form-control bg-light border-0" style={{ maxWidth: "240px" }} type="search" placeholder="Search"></input>
-                        <div className="d-none d-xl-flex link-dark ms-6 me-10 me-xxl-12 text-decoration-none align-items-center" href="#">
+                        <Link className="d-none d-xl-flex link-dark ms-6 me-10 me-xxl-12 text-decoration-none align-items-center" to="/cart">
                             <svg className="me-3" width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M18.1159 8.72461H2.50427C1.99709 8.72461 1.58594 9.12704 1.58594 9.62346V21.3085C1.58594 21.8049 1.99709 22.2074 2.50427 22.2074H18.1159C18.6231 22.2074 19.0342 21.8049 19.0342 21.3085V9.62346C19.0342 9.12704 18.6231 8.72461 18.1159 8.72461Z"
@@ -107,10 +108,7 @@ export default function Navbar() {
                                     strokeLinejoin="round"
                                 ></path>
                             </svg>
-                            <span className="d-inline-block text-center bg-white rounded-circle fw-bold" style={{ width: "24px", height: "24px" }}>
-                                3
-                            </span>
-                        </div>
+                        </Link>
                         <div className="ms-auto py-10 px-10 align-self-stretch border-start link-dark text-decoration-none d-flex align-items-center fw-bold" href="#">
                             {/* <svg className="me-3" width="32" height="31" viewBox="0 0 32 31" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -189,16 +187,19 @@ export default function Navbar() {
                             {displayUserFunctions()}
                         </div>
                     </div>
-                    <input className="form-control mb-10 py-5 px-8 bg-light border-0" type="search" placeholder="Search"></input>
-                    <ul className="list-unstyled mb-0 h4">
-                        <li className="mb-8">
-                            <div className="link-dark text-decoration-none" href="#">
-                                Home
+                    <ul className="navbar-nav me-8 mb-2 mb-lg-0">
+                        <li className="nav-item">
+                            <div className="nav-link">
+                                <Link className="btn" to="/">
+                                    Home
+                                </Link>
                             </div>
                         </li>
-                        <li className="mb-8">
-                            <div className="link-dark text-decoration-none" href="#">
-                                Collection
+                        <li className="nav-item">
+                            <div className="nav-link">
+                                <Link className="btn" to="/collection">
+                                    Collection
+                                </Link>
                             </div>
                         </li>
                     </ul>

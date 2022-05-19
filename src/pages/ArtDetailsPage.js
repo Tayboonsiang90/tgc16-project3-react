@@ -7,20 +7,73 @@ import Description from "./artdetails/Description.js";
 import Listing from "./artdetails/Listing.js";
 import Ownership from "./artdetails/Ownership.js";
 import Vault from "./artdetails/Vault.js";
+import UserContext from "./UserContext.js";
+import PreviousTrades from "./artdetails/PreviousTrades.js";
 
 let API_URL = "http://localhost:4000/api/";
 
 export default function ArtDetailsPage(props) {
+    let userContext = useContext(UserContext);
+
     const { artID } = useParams();
-    const [details, setDetailsState] = useState({ art: "", artist: "", vault: "", tags: "", medias: "" });
+    const [details, setDetailsState] = useState({ art: "", artist: "", vault: "", tags: "", medias: "", ownedShares: 0 });
+    const [createListing, setcreateListingState] = useState({ stbs: 0, pps: 0 });
+    const [message, setMessage] = useState({
+        msg: "",
+    });
 
     useEffect(() => {
         const fetchProduct = async () => {
             let response = await axios.get(API_URL + "arts/" + artID);
-            setDetailsState({ art: response.data, artist: response.data.artist, medias: response.data.medias, vault: response.data.vault, tags: response.data.tags });
+            let ttlShares = 0;
+            for (let i of userContext.user.arts) {
+                if (i.id == artID) {
+                    ttlShares = i._pivot_total_share;
+                }
+            }
+            setDetailsState({ art: response.data, artist: response.data.artist, medias: response.data.medias, vault: response.data.vault, tags: response.data.tags, ownedShares: ttlShares });
         };
         fetchProduct();
     }, [artID]);
+
+    let updateFormState = (e) => {
+        let val = Number(e.target.value);
+        if (val >= 0 && val <= Number(details.ownedShares)) {
+            setcreateListingState({
+                ...createListing,
+                [e.target.name]: val,
+            });
+        }
+    };
+
+    let submitListing = async () => {
+        if (createListing.stbs === 0 || createListing.pps === 0) {
+            setMessage({ msg: "FAILED: You can't sell 0 shares or put $0. " });
+            return;
+        }
+        userContext.updateUser();
+        let token = localStorage.getItem("accessToken");
+        await axios
+            .post(
+                API_URL + "listings/fixed_price_listings",
+                {
+                    art_id: Number(artID),
+                    share: createListing.stbs,
+                    price: createListing.pps,
+                },
+                {
+                    headers: {
+                        authorization: `Bearer ${token}`,
+                    },
+                }
+            )
+            .then((response) => {
+                setMessage({ msg: response.data.message });
+            })
+            .catch((e) => {
+                setMessage({ msg: e });
+            });
+    };
 
     return (
         <React.Fragment>
@@ -34,15 +87,15 @@ export default function ArtDetailsPage(props) {
                                 <h5 className="mt-5">Medias</h5>
                                 {details.medias
                                     ? details.medias.map((p) => (
-                                          <span className="badge rounded-pill bg-success mt-5" key={p.id}>
+                                          <span className="badge rounded-pill bg-success mt-5 me-2" key={p.id}>
                                               {p.name}
                                           </span>
                                       ))
                                     : ""}
-                                <h5 className="mt-5">Tags</h5>
+                                <h5 className="mt-5">Influences</h5>
                                 {details.tags
                                     ? details.tags.map((p) => (
-                                          <span className="badge rounded-pill bg-danger mt-5" key={p.id}>
+                                          <span className="badge rounded-pill bg-danger mt-5 me-2" key={p.id}>
                                               {p.name}
                                           </span>
                                       ))
@@ -60,14 +113,40 @@ export default function ArtDetailsPage(props) {
                                     </p>
                                     <p className="mw-md text-secondary">{details.art.description}</p>
                                 </div>
-                                <div className="d-flex mb-12">
+                                <div className="d-flex pb-12 border-bottom">
                                     <div>
-                                        <span className="d-block mb-4 fw-bold text-secondary text-uppercase">TOTAL SHARES</span>
-                                        <div className="border ps-6 pe-10 py-4 fw-bold text-secondary">{details.art.total_share}</div>
+                                        <span className="d-block mb-4 fw-bold text-uppercase">TOTAL SHARES</span>
+                                        <div className="border ps-6 pe-10 py-4 fw-bold text-secondary">{Number(details.art.total_share).toLocaleString()}</div>
+                                    </div>
+                                    <div className="ms-12">
+                                        <span className="d-block mb-4 fw-bold text-uppercase">YOUR SHARES</span>
+                                        <div className="border ps-6 pe-10 py-4 fw-bold text-secondary">{Number(details.ownedShares).toLocaleString()}</div>
+                                    </div>
+                                    <div className="ms-12">
+                                        <span className="d-block mb-4 fw-bold text-uppercase">YOUR OWNERSHIP %</span>
+                                        <div className="border ps-6 pe-10 py-4 fw-bold text-secondary">{((details.ownedShares / details.art.total_share) * 100).toFixed(2)}%</div>
                                     </div>
                                 </div>
-                                <div className="d-flex align-items-center">
-                                    <p className="me-8 mb-0 text-secondary fw-bold text-uppercase">SHARE IT</p>
+                                <div className="pt-12 border-bottom">
+                                    <h3 className="d-block mb-4 fw-bold text-uppercase">Create Listing</h3>
+                                    <div className="d-flex mb-4">
+                                        <div>
+                                            <span className="d-block mb-4 fw-bold text-uppercase">Shares to be Sold</span>
+                                            <input className="form-control px-2 py-4 text-center text-md-end" style={{ width: "108px" }} value={createListing.stbs} name="stbs" type="number" min={0} max={Number(details.ownedShares)} placeholder={0} onChange={updateFormState}></input>
+                                        </div>
+                                        <div className="ms-12">
+                                            <span className="d-block mb-4 fw-bold text-uppercase">Price Per Share</span>
+                                            <input className="form-control px-2 py-4 text-center text-md-end" style={{ width: "108px" }} value={createListing.pps} name="pps" min={0} type="number" placeholder="$0" onChange={updateFormState}></input>
+                                        </div>
+                                        <div className="btn btn-primary ms-6 align-middle" onClick={submitListing} data-bs-toggle="modal" data-bs-target="#exampleModal5">
+                                            Create Listing
+                                        </div>
+                                    </div>
+                                    <h5 className="d-block mb-4 fw-bold text-uppercase">Indicative Value for the Art: ${Number(details.art.total_share * createListing.pps).toLocaleString()}</h5>
+                                    <h5 className="d-block mb-4 fw-bold text-uppercase">Total listing value: ${Number(createListing.pps * createListing.stbs).toLocaleString()}</h5>
+                                </div>
+                                <div className="pt-12 d-flex align-items-center">
+                                    <p className="me-8 mb-0 fw-bold text-uppercase">SHARE IT</p>
                                     <div className="me-1" href="#" style={{ width: "32px", height: "32px" }}>
                                         <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <circle cx="25" cy="25" r="25" fill="#5475E5" />
@@ -146,6 +225,11 @@ export default function ArtDetailsPage(props) {
                                     Vault Details
                                 </Link>
                             </div>
+                            <div className="col-6 col-md-auto">
+                                <Link to={"/art/" + details.art.id + "/previous"} className="btn text-secondary">
+                                    Previous Trades
+                                </Link>
+                            </div>
                         </div>
                         <Routes>
                             {/* Listing route */}
@@ -153,13 +237,25 @@ export default function ArtDetailsPage(props) {
                             {/* Description Route */}
                             <Route path="/description" element={<Description artist={details.artist} description={details.art.description} />} />
                             {/* Ownership route */}
-                            <Route path="/ownership" element={<Ownership />} />
+                            <Route path="/ownership" element={<Ownership id={details.art.id} ttlShares={details.art.total_share} />} />
                             {/* Vault route */}
                             <Route path="/vault" element={<Vault vault={details.vault} />} />
+                            {/* Vault route */}
+                            <Route path="/previous" element={<PreviousTrades id={details.art.id} />} />
                         </Routes>
                     </div>
                 </div>
             </section>
+            <div className="modal fade" id="exampleModal5" tabIndex="-1">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-body d-flex justify-content-between">
+                            {JSON.stringify(message.msg)}
+                            <button type="button" className="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </React.Fragment>
     );
 }
